@@ -21,7 +21,7 @@ const requestSettings = {
 
 function App() {
 
-const [stops, setStops] = useState([])
+const [stations, setStations] = useState([])
 
   useEffect(()=>{
     // request(requestSettings, (error, response, body) => {
@@ -33,6 +33,10 @@ const [stops, setStops] = useState([])
     //     console.log(`Error: ${error}, Status Code: ${response.statusCode}`)
     //   }
     // })
+    fetch("http://localhost:3000/stations")
+    .then(response => response.json())
+    .then(dbStations => setStations(dbStations))
+    .then(r => console.log(stations))
 
     request(requestSettings, (error, response, body) => {
       if (!error && response.statusCode == 200) {
