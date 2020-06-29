@@ -30,6 +30,8 @@ const posixToStandardTime = (posix) =>{
   console.log(formattedTime);
 }
 
+
+
 function App() {
 
 const [stops, setStops] = useState([])
@@ -53,13 +55,6 @@ const [stops, setStops] = useState([])
         feed.entity.forEach((entity) =>{
           if (entity.tripUpdate) {
             entity.tripUpdate.stopTimeUpdate.forEach(stop =>{
-              // console.log(stop)
-              // if (stop.arrival.time){
-              //   console.log(stop.arrival.time)
-              // } else{
-              //   console.log('no arrival time provided')
-              // }
-            // })
             console.log(stop.stopId)
             entity.tripUpdate.stopTimeUpdate.forEach(stopEvent =>{
               // console.log(stopEvent.arrival)
