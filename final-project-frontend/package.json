@@ -6,6 +6,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "fetch": "^1.1.0",
+    "protobuf.js": "^1.1.2",
+    "protobufjs": "^6.9.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.1"
