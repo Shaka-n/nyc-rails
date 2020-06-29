@@ -37,45 +37,46 @@ const [stops, setStops] = useState([])
   useEffect(()=>{
     // Alternative request, without Google default bindings
   
-    request(requestSettings, (error, response, body) => {
-      if (!error && response.statusCode === 200) {
-        ProtoBuf.load(['services/config/nyct-subway.proto', 'services/config/gtfs-realtime.proto']).then((root) => {
-          console.log(root.lookupType('FeedMessage').decode(body))
-        })
-      } else {
-        console.log(`Error: ${error}, Status Code: ${response.statusCode}`)
-      }
-    })
-
     // request(requestSettings, (error, response, body) => {
-    //   if (!error && response.statusCode == 200) {
-    //     const feed = gtfsRB.FeedMessage.decode(body)
-    //     feed.entity.forEach((entity) =>{
-    //       if (entity.tripUpdate) {
-    //         entity.tripUpdate.stopTimeUpdate.forEach(stop =>{
-    //           // console.log(stop)
-    //           // if (stop.arrival.time){
-    //           //   console.log(stop.arrival.time)
-    //           // } else{
-    //           //   console.log('no arrival time provided')
-    //           // }
-    //         // })
-    //         console.log(stop)
-    //         // entity.tripUpdate.stopTimeUpdate.forEach(stopEvent =>{
-    //         //   if (stop.arrival){
-    //         //   console.log('Arrival')
-    //         //   posixToStandardTime(stopEvent.arrival.time)
-    //         //   }
-    //         //   if (stop.departure){
-    //         //     console.log("Departure")
-    //         //     posixToStandardTime(stopEvent.departure.time)
-    //         //   }
-    //         // })
-    //       })
-    //     }}
-    //     )
+    //   if (!error && response.statusCode === 200) {
+    //     ProtoBuf.load(['services/config/nyct-subway.proto', 'services/config/gtfs-realtime.proto']).then((root) => {
+    //       console.log(root.lookupType('FeedMessage').decode(body))
+    //     })
+    //   } else {
+    //     console.log(`Error: ${error}, Status Code: ${response.statusCode}`)
     //   }
     // })
+
+    request(requestSettings, (error, response, body) => {
+      if (!error && response.statusCode == 200) {
+        const feed = gtfsRB.FeedMessage.decode(body)
+        feed.entity.forEach((entity) =>{
+          if (entity.tripUpdate) {
+            entity.tripUpdate.stopTimeUpdate.forEach(stop =>{
+              // console.log(stop)
+              // if (stop.arrival.time){
+              //   console.log(stop.arrival.time)
+              // } else{
+              //   console.log('no arrival time provided')
+              // }
+            // })
+            console.log(stop.stopId)
+            entity.tripUpdate.stopTimeUpdate.forEach(stopEvent =>{
+              // console.log(stopEvent.arrival)
+              if (stopEvent.arrival){
+              console.log('Arrival')
+              posixToStandardTime(stopEvent.arrival.time)
+              }
+              // if (stopEvent.departure){
+              //   console.log("Departure")
+              //   posixToStandardTime(stopEvent.departure.time)
+              // }
+            })
+          })
+        }}
+        )
+      }
+    })
 
 })
 
