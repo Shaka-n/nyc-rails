@@ -1,11 +1,18 @@
 const ProtoBuf = require('protobufjs')
-const fetchURL = require('fetch').fetchUrl
-const apiURL = 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l'
+const request = require('request')
+const requestSettings = {
+  method: 'GET',
+  url: 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l',
+  encoding: null,
+  headers: { "x-api-key": '' }
+}
 
-ProtoBuf.load(['config/nyct-subway.proto', 'config/gtfs-realtime.proto']).then(async (root) => {
-  let response = await fetchURL(apiURL, {
-    method: 'GET'
-  })
-
-  // put some debugger here
+request(requestSettings, (error, response, body) => {
+  if (!error && response.statusCode === 200) {
+    ProtoBuf.load(['config/nyct-subway.proto', 'config/gtfs-realtime.proto']).then((root) => {
+      console.log(root.lookupType('FeedMessage').decode(body))
+    })
+  } else {
+    console.log(`Error: ${error}, Status Code: ${response.statusCode}`)
+  }
 })
