@@ -33,6 +33,7 @@ const translateStationId = (stations, fullStopId) =>{
   const stopId = fullStopId.substring(0, fullStopId.length - 1)
   console.log(stopId)
   const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
+  
   console.log(targetStation.stop_name)
 }
   
