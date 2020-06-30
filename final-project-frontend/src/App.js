@@ -29,34 +29,37 @@ const convertPosixToDate = (unix_timestamp)=>{
 }
 
 const translateStationId = (stations, fullStopId) =>{
-  const testId = "L03N"
+  // const testId = "L03N"
   const stopId = fullStopId.substring(0, fullStopId.length - 1)
   console.log(stopId)
   const targetStation = stations.find(station => station.gtfsStopId === stopId)
   console.log(targetStation)
 }
+  
 
-const App = () =>{
+const App = () => {
 
 const [stations, setStations] = useState([])
+const [arrivalsForL, setArrivalsForL] = useState([])
 
-// Mounting Effect
+// Mounting Effect,
   useEffect(()=>{
 // Fetching static station data
     const fetchStationData = async () =>{
-      await fetch("http://localhost:3000/stations")
+      fetch("http://localhost:3000/stations")
         .then(response => response.json())
-        .then(dbStations => setStations(stations.push(dbStations)))
+        .then(dbStations => {setStations(stations => [...stations, dbStations])})
         .then(resp => console.log(stations))
     }
     fetchStationData()
 
 // requesting live feed data
-const fetchLiveData = async () =>{
-  await request(requestSettings, (error, response, body) => {
+const fetchLiveData = () =>{
+  request(requestSettings, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const feed = gtfsRB.FeedMessage.decode(body)
-      feed.entity.forEach(function(entity) {
+      console.log(stations)
+      feed.entity.forEach((entity) => {
         // console.log(entity)
         if (entity.tripUpdate) {
           // console.log(entity.tripUpdate)
@@ -65,7 +68,13 @@ const fetchLiveData = async () =>{
             translateStationId(stations, stopTU.stopId)
             if(stopTU.arrival){
               console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
-              
+              // if(!arrivalsForL.find(arrival => arrival.stationID ===stopTU.stopId)){
+              //   setArrivalsForL(arrivalsForL.push(
+              //     {stationId: stopTU.stopId, 
+              //       nextArrival:stopTU.arrival.time
+              //     })
+              //     )
+              // }
             }
           })
         }
@@ -81,18 +90,10 @@ fetchLiveData()
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          There are {stations.count} in the database.
+          There are {stations.length} stations in the database.
+          There are {arrivalsForL.count} stations with arrival times.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );
