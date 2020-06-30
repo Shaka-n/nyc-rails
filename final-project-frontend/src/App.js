@@ -14,8 +14,8 @@ const requestSettings = {
   url: 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l',
   encoding: null,
   headers: { 
-    "Content-Type": "application/x-protobuf",
-    "Accept": "application/x-protobuf",
+    "Content-Type": "application/x-proto",
+    "Accept": "application/x-proto",
     "x-api-key": API_KEY }
 }
 
@@ -33,9 +33,10 @@ const translateStationId = (stations, fullStopId) =>{
   const stopId = fullStopId.substring(0, fullStopId.length - 1)
   console.log(stopId)
   const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
+  
   console.log(targetStation.stop_name)
 }
-  
+
 
 class App extends React.Component{
 
