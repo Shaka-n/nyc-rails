@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-const ProtoBuf = require('protobufjs')
+// const ProtoBuf = require('protobufjs')
 const request = require('request')
 const gtfsRB = require('gtfs-rb').transit_realtime
 
@@ -19,80 +19,85 @@ const requestSettings = {
     "x-api-key": API_KEY }
 }
 
-const posixToStandardTime = (posix) =>{
-  let unix_timestamp = posix
+const convertPosixToDate = (unix_timestamp)=>{
   const date = new Date(unix_timestamp * 1000);
   const hours = date.getHours();
   const minutes = "0" + date.getMinutes();
   const seconds = "0" + date.getSeconds();
   const formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return formattedTime
+}
+
+const translateStationId = (stations, fullStopId) =>{
+  // const testId = "L03N"
+  const stopId = fullStopId.substring(0, fullStopId.length - 1)
+  console.log(stopId)
+  const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
   
-  console.log(formattedTime);
+  console.log(targetStation.stop_name)
 }
 
 
+class App extends React.Component{
 
-function App() {
+state ={
+  stations: [],
+  scheduleForL:[]
+}
 
-const [stops, setStops] = useState([])
-
-  useEffect(()=>{
-    // Alternative request, without Google default bindings
-  
-    // request(requestSettings, (error, response, body) => {
-    //   if (!error && response.statusCode === 200) {
-    //     ProtoBuf.load(['services/config/nyct-subway.proto', 'services/config/gtfs-realtime.proto']).then((root) => {
-    //       console.log(root.lookupType('FeedMessage').decode(body))
-    //     })
-    //   } else {
-    //     console.log(`Error: ${error}, Status Code: ${response.statusCode}`)
-    //   }
-    // })
-
-    request(requestSettings, (error, response, body) => {
-      if (!error && response.statusCode == 200) {
-        const feed = gtfsRB.FeedMessage.decode(body)
-        feed.entity.forEach((entity) =>{
-          if (entity.tripUpdate) {
-            entity.tripUpdate.stopTimeUpdate.forEach(stop =>{
-            console.log(stop.stopId)
-            entity.tripUpdate.stopTimeUpdate.forEach(stopEvent =>{
-              // console.log(stopEvent.arrival)
-              if (stopEvent.arrival){
-              console.log('Arrival')
-              posixToStandardTime(stopEvent.arrival.time)
+  componentDidMount(){
+// Fetching static station data
+    const fetchStationData = () => {
+      fetch("http://localhost:3000/stations")
+        .then(response => response.json())
+        .then(dbStations => this.setState({stations:dbStations}))
+        .then(resp => console.log(this.state.stations))
+    }
+    fetchStationData()
+    
+// requesting live feed data
+const fetchLiveData = () =>{
+  request(requestSettings, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const feed = gtfsRB.FeedMessage.decode(body)
+      console.log(this.state.stations)
+      feed.entity.forEach((entity) => {
+        if (entity.tripUpdate) {
+          entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
+            translateStationId(this.state.stations, stopTU.stopId)
+            if(stopTU.arrival){
+              console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
+              if(!this.state.scheduleForL.find(arrival => arrival.stationID ===stopTU.stopId)){
+                this.setState({
+                  scheduleForL: [...this.state.scheduleForL, {stationId: stopTU.stopId, 
+                  nextArrival:stopTU.arrival.time}]
+                })
+                  
               }
-              // if (stopEvent.departure){
-              //   console.log("Departure")
-              //   posixToStandardTime(stopEvent.departure.time)
-              // }
-            })
+            }
           })
-        }}
-        )
-      }
-    })
+        }
+      })
+    }
+  })
+  }
+fetchLiveData() 
+}
 
-})
-
+render(){
+  console.log(this.state.scheduleForL)
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          There are {this.state.stations.length} stations in the database.
+          There are {this.state.scheduleForL.length} stations with arrival times.
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
     </div>
   );
 }
+}
+  
 
 export default App;
