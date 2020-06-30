@@ -32,49 +32,47 @@ const translateStationId = (stations, fullStopId) =>{
   // const testId = "L03N"
   const stopId = fullStopId.substring(0, fullStopId.length - 1)
   console.log(stopId)
-  const targetStation = stations.find(station => station.gtfsStopId === stopId)
-  console.log(targetStation)
+  const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
+  console.log(targetStation.stop_name)
 }
   
 
-const App = () => {
+class App extends React.Component{
 
-const [stations, setStations] = useState([])
-const [arrivalsForL, setArrivalsForL] = useState([])
+state ={
+  stations: [],
+  scheduleForL:[]
+}
 
-// Mounting Effect,
-  useEffect(()=>{
+  componentDidMount(){
 // Fetching static station data
-    const fetchStationData = async () =>{
+    const fetchStationData = () => {
       fetch("http://localhost:3000/stations")
         .then(response => response.json())
-        .then(dbStations => {setStations(stations => [...stations, dbStations])})
-        .then(resp => console.log(stations))
+        .then(dbStations => this.setState({stations:dbStations}))
+        .then(resp => console.log(this.state.stations))
     }
     fetchStationData()
-
+    
 // requesting live feed data
 const fetchLiveData = () =>{
   request(requestSettings, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const feed = gtfsRB.FeedMessage.decode(body)
-      console.log(stations)
+      console.log(this.state.stations)
       feed.entity.forEach((entity) => {
-        // console.log(entity)
         if (entity.tripUpdate) {
-          // console.log(entity.tripUpdate)
           entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
-            console.log(stopTU.stopId)
-            translateStationId(stations, stopTU.stopId)
+            translateStationId(this.state.stations, stopTU.stopId)
             if(stopTU.arrival){
               console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
-              // if(!arrivalsForL.find(arrival => arrival.stationID ===stopTU.stopId)){
-              //   setArrivalsForL(arrivalsForL.push(
-              //     {stationId: stopTU.stopId, 
-              //       nextArrival:stopTU.arrival.time
-              //     })
-              //     )
-              // }
+              if(!this.state.scheduleForL.find(arrival => arrival.stationID ===stopTU.stopId)){
+                this.setState({
+                  scheduleForL: [...this.state.scheduleForL, {stationId: stopTU.stopId, 
+                  nextArrival:stopTU.arrival.time}]
+                })
+                  
+              }
             }
           })
         }
@@ -83,20 +81,22 @@ const fetchLiveData = () =>{
   })
   }
 fetchLiveData() 
-    
-    console.log(stations)
-},[])
+}
 
+render(){
+  console.log(this.state.scheduleForL)
   return (
     <div className="App">
       <header className="App-header">
         <p>
-          There are {stations.length} stations in the database.
-          There are {arrivalsForL.count} stations with arrival times.
+          There are {this.state.stations.length} stations in the database.
+          There are {this.state.scheduleForL.length} stations with arrival times.
         </p>
       </header>
     </div>
   );
 }
+}
+  
 
 export default App;
