@@ -23,34 +23,28 @@ function App() {
 
 const [stations, setStations] = useState([])
 
+// Mounting Effect
   useEffect(()=>{
-    // request(requestSettings, (error, response, body) => {
-    //   if (!error && response.statusCode === 200) {
-    //     ProtoBuf.load(['services/config/nyct-subway.proto', 'services/config/gtfs-realtime.proto']).then((root) => {
-    //       console.log(root.lookupType('FeedMessage').decode(body))
-    //     })
-    //   } else {
-    //     console.log(`Error: ${error}, Status Code: ${response.statusCode}`)
-    //   }
-    // })
+// Fetching static station data
     fetch("http://localhost:3000/stations")
     .then(response => response.json())
     .then(dbStations => setStations(dbStations))
-    .then(r => console.log(stations))
-
+    .then(resp => console.log(stations))
+    
+// requesting live feed data
     request(requestSettings, (error, response, body) => {
       if (!error && response.statusCode == 200) {
         var feed = gtfsRB.FeedMessage.decode(body)
         feed.entity.forEach(function(entity) {
-          console.log(entity)
-          // if (entity.trip_update) {
-          //   console.log(entity.trip_update);
-          // }
+          // console.log(entity)
+          if (entity.tripUpdate) {
+            console.log(entity.tripUpdate);
+          }
         })
       }
     })
-
-})
+    // console.log(stations)
+}, [])
 
   return (
     <div className="App">
