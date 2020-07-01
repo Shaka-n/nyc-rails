@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
+import LineContainer from './components/LineContainer.js'
 // const ProtoBuf = require('protobufjs')
 const request = require('request')
 const gtfsRB = require('gtfs-rb').transit_realtime
@@ -31,10 +32,10 @@ const convertPosixToDate = (unix_timestamp)=>{
 const translateStationId = (stations, fullStopId) =>{
   // const testId = "L03N"
   const stopId = fullStopId.substring(0, fullStopId.length - 1)
-  console.log(stopId)
+  // console.log(stopId)
   const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
-  
-  console.log(targetStation.stop_name)
+  // console.log(targetStation.stop_name)
+  return targetStation.stop_name
 }
   
 
@@ -42,10 +43,10 @@ class App extends React.Component{
 
 state ={
   stations: [],
-  scheduleForL:[]
+  scheduleForL:[],
 }
 
-  componentDidMount(){
+componentDidMount(){
 // Fetching static station data
     const fetchStationData = () => {
       fetch("http://localhost:3000/stations")
@@ -56,7 +57,10 @@ state ={
     fetchStationData()
     
 // requesting live feed data
-const fetchLiveData = () =>{
+// this.fetchLiveData()
+}
+
+fetchLiveData = () =>{
   request(requestSettings, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const feed = gtfsRB.FeedMessage.decode(body)
@@ -64,15 +68,20 @@ const fetchLiveData = () =>{
       feed.entity.forEach((entity) => {
         if (entity.tripUpdate) {
           entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
-            translateStationId(this.state.stations, stopTU.stopId)
+            // translateStationId(this.state.stations, stopTU.stopId)
             if(stopTU.arrival){
-              console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
-              if(!this.state.scheduleForL.find(arrival => arrival.stationID ===stopTU.stopId)){
+              // console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
+              // Need to find a way to not add more if they are already in the schedule
+              if(this.state.scheduleForL.find(station => station.stationId === stopTU.stopId)){
+                console.log("not unique")
                 this.setState({
-                  scheduleForL: [...this.state.scheduleForL, {stationId: stopTU.stopId, 
-                  nextArrival:stopTU.arrival.time}]
+                  scheduleForL: [...this.state.scheduleForL, {
+                    stationName:translateStationId(this.state.stations, stopTU.stopId),
+                    stationId: stopTU.stopId,
+                    nextArrival:stopTU.arrival.time}]
                 })
-                  
+              }else{
+                console.log('unique!')
               }
             }
           })
@@ -80,9 +89,9 @@ const fetchLiveData = () =>{
       })
     }
   })
+  
   }
-fetchLiveData() 
-}
+
 
 render(){
   console.log(this.state.scheduleForL)
@@ -91,9 +100,14 @@ render(){
       <header className="App-header">
         <p>
           There are {this.state.stations.length} stations in the database.
-          There are {this.state.scheduleForL.length} stations with arrival times.
+          There are {this.state.scheduleForL.length} scheduled arrivals.
         </p>
       </header>
+      <main>
+        <div id="line-box">
+          <LineContainer currentSchedules = {this.state.scheduleForL} fetchLineSchedule={this.fetchLiveData}/>
+        </div>
+      </main>
     </div>
   );
 }
