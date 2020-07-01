@@ -57,7 +57,7 @@ componentDidMount(){
     fetchStationData()
     
 // requesting live feed data
-// this.fetchLiveData()
+this.fetchLiveData()
 }
 
 fetchLiveData = () =>{
@@ -74,14 +74,16 @@ fetchLiveData = () =>{
               // Need to find a way to not add more if they are already in the schedule
               if(this.state.scheduleForL.find(station => station.stationId === stopTU.stopId)){
                 console.log("not unique")
-                this.setState({
-                  scheduleForL: [...this.state.scheduleForL, {
-                    stationName:translateStationId(this.state.stations, stopTU.stopId),
-                    stationId: stopTU.stopId,
-                    nextArrival:stopTU.arrival.time}]
-                })
               }else{
-                console.log('unique!')
+                console.log('unique')
+                const stationSummInfo = {
+                  stationName: translateStationId(this.state.stations, stopTU.stopId),
+                  stationId: stopTU.stopId,
+                  nextArrival: stopTU.arrival.time}
+
+                this.setState({
+                  scheduleForL: [...this.state.scheduleForL, stationSummInfo ]
+                })
               }
             }
           })
