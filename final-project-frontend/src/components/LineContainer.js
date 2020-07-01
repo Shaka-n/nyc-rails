@@ -4,12 +4,23 @@ import StationSummary from './StationSummary.js'
 const LineContainer = (props) =>{
 
 const handleChange = () =>{
-    props.fetchLineSchedule()
+    props.fetchLiveData()
 }
+
+const renderStationSummary = (station) =>{
+    console.log("In the Render Station Summary")
+    return <StationSummary 
+            name={station.stationName} 
+            direction={station.stationName.slice(-1)} 
+            nextArrival={station.nextArrival}/>
+        
+}
+
     return(
         <div>
-            {/* Need dropdown menu here for line selection */}
+            {console.log('Initial render')}
             <select name="line-selection" id="lines" onChange={()=> handleChange()}>
+                <option>Choose a line</option>
                 <option value="L">L</option>
                 <option value="ACE">A,C,E</option>
                 <option value="123456">1,2,3,4,5,6</option>
@@ -18,9 +29,11 @@ const handleChange = () =>{
                 <option value="JZ">J,Z</option>
             </select>
             <div>
-            {/* {props.scheduleForL.forEach(station =>(
-                <StationSummary name={station.stationName} nextArrival={station.nextArrival}/>
-            ))} */}
+                {props.currentSchedules.forEach(station => {
+                    // console.log(station)
+                    renderStationSummary(station)
+                    }
+                )}
             </div>
         </div>
     )

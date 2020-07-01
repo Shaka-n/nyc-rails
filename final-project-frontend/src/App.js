@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import LineContainer from './components/LineContainer.js'
-// const ProtoBuf = require('protobufjs')
+const ProtoBuf = require('protobufjs')
 const request = require('request')
 const gtfsRB = require('gtfs-rb').transit_realtime
 
@@ -18,15 +18,6 @@ const requestSettings = {
     "Content-Type": "application/x-protobuf",
     "Accept": "application/x-protobuf",
     "x-api-key": API_KEY }
-}
-
-const convertPosixToDate = (unix_timestamp)=>{
-  const date = new Date(unix_timestamp * 1000);
-  const hours = date.getHours();
-  const minutes = "0" + date.getMinutes();
-  const seconds = "0" + date.getSeconds();
-  const formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-  return formattedTime
 }
 
 const translateStationId = (stations, fullStopId) =>{
@@ -57,7 +48,7 @@ componentDidMount(){
     fetchStationData()
     
 // requesting live feed data
-this.fetchLiveData()
+// this.fetchLiveData()
 }
 
 fetchLiveData = () =>{
@@ -107,7 +98,7 @@ render(){
       </header>
       <main>
         <div id="line-box">
-          <LineContainer currentSchedules = {this.state.scheduleForL} fetchLineSchedule={this.fetchLiveData}/>
+          <LineContainer currentSchedules = {this.state.scheduleForL} fetchLiveData={this.fetchLiveData}/>
         </div>
       </main>
     </div>
