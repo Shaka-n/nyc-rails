@@ -29,11 +29,12 @@ const renderStationSummary = (station) =>{
                 <option value="JZ">J,Z</option>
             </select>
             <div>
-                {props.currentSchedules.map(station => {
+                {console.log(props.currentSchedules)}
+                {/* {props.currentSchedules.map(station => {
                     // console.log(station)
                     return renderStationSummary(station)
                     }
-                )}
+                )} */}
             </div>
         </div>
     )

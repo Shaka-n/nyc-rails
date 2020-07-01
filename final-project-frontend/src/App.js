@@ -62,9 +62,20 @@ fetchLiveData = () =>{
             // translateStationId(this.state.stations, stopTU.stopId)
             if(stopTU.arrival){
               // console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
-              // Need to find a way to not add more if they are already in the schedule
+              // TODO: Need to find a way to update the schedule on subsequent fetches
+              // console.log(this.state.scheduleForL)
               if(this.state.scheduleForL.find(station => station.stationId === stopTU.stopId)){
-                console.log("not unique")
+                const stationIndex = this.state.scheduleForL.findIndex(station => station.stationId === stopTU.stopId)
+                console.log("Existing Station!")
+                if(this.state.scheduleForL[stationIndex].nextArrival != stopTU.arrival.time){
+                  console.log("Time Difference!")
+                  let newSchedule = [...this.state.scheduleForL]
+                  newSchedule[stationIndex] = {...newSchedule[stationIndex], nextArrival: stopTU.arrival.time}
+                  this.setState(prevState=>({
+                    ...prevState,
+                      scheduleForL: newSchedule
+                  }))
+                }
               }else{
                 console.log('unique')
                 const stationSummInfo = {
@@ -98,6 +109,7 @@ render(){
       </header>
       <main>
         <div id="line-box">
+          
           <LineContainer currentSchedules = {this.state.scheduleForL} fetchLiveData={this.fetchLiveData}/>
         </div>
       </main>

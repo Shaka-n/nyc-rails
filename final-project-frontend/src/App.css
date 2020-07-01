@@ -21,10 +21,11 @@
   background-color: darkkhaki;
   height: 40vh;
   display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
 .station-summary{
-  
-  color: #A7A9AC;
+  color: black;
 }
 
