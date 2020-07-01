@@ -23,7 +23,7 @@ const StationSummary = (props) =>{
 
     return(
 
-        <div>
+        <div className={"station-summary"}>
             {console.log("This should be a station Summary")}
             <h3>Name: {props.name}</h3>
             <h3>Direction:{direction}</h3>

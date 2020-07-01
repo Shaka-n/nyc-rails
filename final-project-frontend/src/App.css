@@ -20,5 +20,11 @@
 #line-box{
   background-color: darkkhaki;
   height: 40vh;
+  display: flex;
+}
+
+.station-summary{
+  
+  color: #A7A9AC;
 }
 

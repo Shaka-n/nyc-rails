@@ -29,9 +29,9 @@ const renderStationSummary = (station) =>{
                 <option value="JZ">J,Z</option>
             </select>
             <div>
-                {props.currentSchedules.forEach(station => {
+                {props.currentSchedules.map(station => {
                     // console.log(station)
-                    renderStationSummary(station)
+                    return renderStationSummary(station)
                     }
                 )}
             </div>
