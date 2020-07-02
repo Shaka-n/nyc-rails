@@ -12,12 +12,13 @@ const StationSummary = (props) =>{
         return formattedTime
       }
     const determineDirection = (dir) =>{
-        const direction = null
+        let direction = null
         if(dir === "N"){
             direction = "North"
         }else if(dir==="S"){
             direction ="South"
         }
+        return direction
     }
     
 
@@ -27,7 +28,7 @@ const StationSummary = (props) =>{
         <div className={"station-summary"}>
             {console.log("This should be a station Summary")}
             <h3>Name: {props.name}</h3>
-            <h3>Direction:{determineDirection(props.direction)}</h3>
+            <h3>Direction: {determineDirection(props.direction)}</h3>
             <h3>Next train at: {convertPosixToDate(props.nextArrival)}</h3>
         </div>
     )

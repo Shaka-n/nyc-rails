@@ -9,9 +9,10 @@ const handleChange = () =>{
 
 const renderStationSummary = (station) =>{
     console.log("In the Render Station Summary")
+
     return <StationSummary 
             name={station.stationName} 
-            direction={station.stationName.slice(-1)} 
+            direction={station.stationId.slice(-1)} 
             nextArrival={station.nextArrival}/>
         
 }
@@ -30,11 +31,12 @@ const renderStationSummary = (station) =>{
             </select>
             <div>
                 {console.log(props.currentSchedules)}
-                {/* {props.currentSchedules.map(station => {
+                {props.currentSchedules.map(station => {
                     // console.log(station)
                     return renderStationSummary(station)
                     }
-                )} */}
+                )}
+                
             </div>
         </div>
     )

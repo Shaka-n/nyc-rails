@@ -62,8 +62,6 @@ fetchLiveData = () =>{
             // translateStationId(this.state.stations, stopTU.stopId)
             if(stopTU.arrival){
               // console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
-              // TODO: Need to find a way to update the schedule on subsequent fetches
-              // console.log(this.state.scheduleForL)
               if(this.state.scheduleForL.find(station => station.stationId === stopTU.stopId)){
                 const stationIndex = this.state.scheduleForL.findIndex(station => station.stationId === stopTU.stopId)
                 console.log("Existing Station!")
@@ -71,6 +69,7 @@ fetchLiveData = () =>{
                   console.log("Time Difference!")
                   let newSchedule = [...this.state.scheduleForL]
                   newSchedule[stationIndex] = {...newSchedule[stationIndex], nextArrival: stopTU.arrival.time}
+                  newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
                   this.setState(prevState=>({
                     ...prevState,
                       scheduleForL: newSchedule
