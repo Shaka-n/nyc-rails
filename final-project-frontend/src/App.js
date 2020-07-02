@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import LineContainer from './components/LineContainer.js'
+import LinePicker from './components/LinePicker.js'
+
 const ProtoBuf = require('protobufjs')
 const request = require('request')
 const gtfsRB = require('gtfs-rb').transit_realtime
@@ -35,6 +37,8 @@ class App extends React.Component{
 state ={
   stations: [],
   scheduleForL:[],
+  stationsLoading: false,
+  selectedLine: 'l'
 }
 
 componentDidMount(){
@@ -72,7 +76,8 @@ fetchLiveData = () =>{
                   newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
                   this.setState(prevState=>({
                     ...prevState,
-                      scheduleForL: newSchedule
+                    stationsLoading: false,
+                    scheduleForL: newSchedule
                   }))
                 }
               }else{
@@ -83,6 +88,7 @@ fetchLiveData = () =>{
                   nextArrival: stopTU.arrival.time}
 
                 this.setState({
+                  stationsLoading: false,
                   scheduleForL: [...this.state.scheduleForL, stationSummInfo ]
                 })
               }
@@ -95,6 +101,10 @@ fetchLiveData = () =>{
   
   }
 
+updateSelectedStation = (s) =>{
+  this.setState(prev => ({...prev, stationsLoading: true, selectedStation: s}))
+  this.fetchLiveData()
+  }
 
 render(){
   console.log(this.state.scheduleForL)
@@ -108,8 +118,15 @@ render(){
       </header>
       <main>
         <div id="line-box">
-          
-          <LineContainer currentSchedules = {this.state.scheduleForL} fetchLiveData={this.fetchLiveData}/>
+          <LinePicker 
+          stationsLoading={this.state.stationsLoading}
+          selectedStation={this.state.selectedStation}
+          updateSelectedStation={this.updateSelectedStation}
+          />
+          <LineContainer 
+          currentSchedules = {this.state.scheduleForL} 
+          // fetchLiveData={this.fetchLiveData}
+          />
         </div>
       </main>
     </div>

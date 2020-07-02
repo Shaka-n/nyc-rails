@@ -11,25 +11,53 @@ const StationSummary = (props) =>{
         const formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
         return formattedTime
       }
-    const determineDirection = (dir) =>{
-        let direction = null
-        if(dir === "N"){
+
+    const determineDirection = (stationId) =>{
+        let direction = stationId.slice(-1)
+
+        if(direction === "N"){
             direction = "North"
-        }else if(dir==="S"){
+        }else if(direction==="S"){
             direction ="South"
         }
         return direction
     }
-    
+
+    const renderSummary = () =>{
+        // console.log(props.stops)
+        if(props.stops.length === 1){
+            return (
+                <div>
+                <h2>Station:{props.stops[0].stationName} </h2>
+                <div className={"northbound-station"}>
+                    <h3>Direction: {determineDirection(props.stops[0].stationId)}</h3>
+                    <h3>Next train at: {convertPosixToDate(props.stops[0].nextArrival)} </h3>
+                </div>
+                </div>
+                )
+        } else if (props.stops.length === 2){
+            return(
+                <div>
+                    <h2>Station:{props.stops[0].stationName} </h2>
+                    <div className={"northbound-station"}>
+                        <h3>Direction: {determineDirection(props.stops[0].stationName)}</h3>
+                        <h3>Next train at: {convertPosixToDate(props.stops[0].nextArrival)} </h3>
+                    </div>
+                    <div className={"southbound-station"}>
+                        <h3>Direction:{determineDirection(props.stops[1].stationName)} </h3>
+                        <h3>Next train at:  {convertPosixToDate(props.stops[1].nextArrival)}</h3>
+                    </div>
+                </div>
+            )
+        }
+    }
 
 
     return(
 
         <div className={"station-summary"}>
             {console.log("This should be a station Summary")}
-            <h3>Name: {props.name}</h3>
-            <h3>Direction: {determineDirection(props.direction)}</h3>
-            <h3>Next train at: {convertPosixToDate(props.nextArrival)}</h3>
+            {renderSummary()}
         </div>
     )
 }
