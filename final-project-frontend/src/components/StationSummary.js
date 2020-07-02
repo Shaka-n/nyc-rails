@@ -28,7 +28,7 @@ const StationSummary = (props) =>{
         if(props.stops.length === 1){
             return (
                 <div>
-                <h2>Station:{props.stops[0].stationName} </h2>
+                <h2>Station: {props.stops[0].stationName} </h2>
                 <div className={"northbound-station"}>
                     <h3>Direction: {determineDirection(props.stops[0].stationId)}</h3>
                     <h3>Next train at: {convertPosixToDate(props.stops[0].nextArrival)} </h3>

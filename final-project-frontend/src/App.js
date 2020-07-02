@@ -12,15 +12,6 @@ const dotenv = require("dotenv");
 dotenv.config();
 const API_KEY = process.env.REACT_APP_API_KEY
 
-const requestSettings = {
-  method: 'GET',
-  url: 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l',
-  encoding: null,
-  headers: { 
-    "Content-Type": "application/x-protobuf",
-    "Accept": "application/x-protobuf",
-    "x-api-key": API_KEY }
-}
 
 const translateStationId = (stations, fullStopId) =>{
   // const testId = "L03N"
@@ -55,7 +46,16 @@ componentDidMount(){
 // this.fetchLiveData()
 }
 
-fetchLiveData = () =>{
+fetchLiveData = (line) =>{
+  const requestSettings = {
+    method: 'GET',
+    url: `https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-${line}`,
+    encoding: null,
+    headers: { 
+      "Content-Type": "application/x-protobuf",
+      "Accept": "application/x-protobuf",
+      "x-api-key": API_KEY }
+  }
   request(requestSettings, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const feed = gtfsRB.FeedMessage.decode(body)
@@ -102,8 +102,8 @@ fetchLiveData = () =>{
   }
 
 updateSelectedStation = (s) =>{
-  this.setState(prev => ({...prev, stationsLoading: true, selectedStation: s}))
-  this.fetchLiveData()
+  this.setState(prev => ({...prev, scheduleForL:[], stationsLoading: true, selectedStation: s}))
+  this.fetchLiveData(s)
   }
 
 render(){
