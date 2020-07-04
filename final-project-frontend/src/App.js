@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
-// const ProtoBuf = require('protobufjs')
+import LineContainer from './components/LineContainer.js'
+import LinePicker from './components/LinePicker.js'
+
+const ProtoBuf = require('protobufjs')
 const request = require('request')
 const gtfsRB = require('gtfs-rb').transit_realtime
 
@@ -9,16 +12,16 @@ const dotenv = require("dotenv");
 dotenv.config();
 const API_KEY = process.env.REACT_APP_API_KEY
 
-const requestSettings = {
-  method: 'GET',
-  url: 'https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-l',
-  encoding: null,
-  headers: { 
-    "Content-Type": "application/x-proto",
-    "Accept": "application/x-proto",
-    "x-api-key": API_KEY }
-}
 
+const translateStationId = (stations, fullStopId) =>{
+  // const testId = "L03N"
+  const stopId = fullStopId.substring(0, fullStopId.length - 1)
+  // console.log(stopId)
+  const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
+  // console.log(targetStation.stop_name)
+  return targetStation.stop_name
+}
+  
 const convertPosixToDate = (unix_timestamp)=>{
   const date = new Date(unix_timestamp * 1000);
   const hours = date.getHours();
@@ -28,24 +31,16 @@ const convertPosixToDate = (unix_timestamp)=>{
   return formattedTime
 }
 
-const translateStationId = (stations, fullStopId) =>{
-  // const testId = "L03N"
-  const stopId = fullStopId.substring(0, fullStopId.length - 1)
-  console.log(stopId)
-  const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
-  
-  console.log(targetStation.stop_name)
-}
-
-
 class App extends React.Component{
 
 state ={
   stations: [],
-  scheduleForL:[]
+  scheduleForL:[],
+  stationsLoading: false,
+  selectedLine: 'l'
 }
 
-  componentDidMount(){
+componentDidMount(){
 // Fetching static station data
     const fetchStationData = () => {
       fetch("http://localhost:3000/stations")
@@ -56,7 +51,19 @@ state ={
     fetchStationData()
     
 // requesting live feed data
-const fetchLiveData = () =>{
+// this.fetchLiveData()
+}
+
+fetchLiveData = (line) =>{
+  const requestSettings = {
+    method: 'GET',
+    url: `https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs-${line}`,
+    encoding: null,
+    headers: { 
+      "Content-Type": "application/x-protobuf",
+      "Accept": "application/x-protobuf",
+      "x-api-key": API_KEY }
+  }
   request(requestSettings, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const feed = gtfsRB.FeedMessage.decode(body)
@@ -64,15 +71,50 @@ const fetchLiveData = () =>{
       feed.entity.forEach((entity) => {
         if (entity.tripUpdate) {
           entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
-            translateStationId(this.state.stations, stopTU.stopId)
+            // translateStationId(this.state.stations, stopTU.stopId)
             if(stopTU.arrival){
-              console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
-              if(!this.state.scheduleForL.find(arrival => arrival.stationID ===stopTU.stopId)){
+              // console.log('Estimated Arrival Time:', convertPosixToDate(stopTU.arrival.time))
+              if(this.state.scheduleForL.find(station => station.stationId === stopTU.stopId)){
+                const stationIndex = this.state.scheduleForL.findIndex(station => station.stationId === stopTU.stopId)
+                console.log("Existing Station!")
+                if(this.state.scheduleForL[stationIndex].nextArrival != stopTU.arrival.time){
+                  console.log("Time Difference!")
+                  let newSchedule = [...this.state.scheduleForL]
+                  newSchedule[stationIndex] = {...newSchedule[stationIndex], nextArrival: stopTU.arrival.time}
+                  newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
+                  this.setState(prevState=>({
+                    ...prevState,
+                    stationsLoading: false,
+                    scheduleForL: newSchedule
+                  }))
+                }
+              }else{
+                console.log('unique')
+                const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
+                const stationSummInfo = {
+                  stationName: friendlyName,
+                  stationId: stopTU.stopId,
+                  nextArrival: stopTU.arrival.time}
+
                 this.setState({
-                  scheduleForL: [...this.state.scheduleForL, {stationId: stopTU.stopId, 
-                  nextArrival:stopTU.arrival.time}]
+                  stationsLoading: false,
+                  scheduleForL: [...this.state.scheduleForL, stationSummInfo ]
+                
                 })
-                  
+                // This is where you would post to the DB
+                // fetch('http://localhost:3000/transport_events',{
+                //   method: "POST",
+                //   headers: {
+                //     "Content-Type":"application/json",
+                //     Accept: "application/json"
+                //   },
+                //   body: JSON.stringify({
+                //     station_id: stopTU.stopId,
+                //     arrival: convertPosixToDate(stopTU.arrival.time),
+                //     departure: 'nil',
+                //     direction: stopTU.stopId.slice(-1)
+                //   })
+                // })
               }
             }
           })
@@ -80,9 +122,13 @@ const fetchLiveData = () =>{
       })
     }
   })
+  
   }
-fetchLiveData() 
-}
+
+updateSelectedStation = (line) =>{
+  this.setState(prev => ({...prev, scheduleForL:[], stationsLoading: true, selectedStation: line}))
+  this.fetchLiveData(line)
+  }
 
 render(){
   console.log(this.state.scheduleForL)
@@ -91,9 +137,22 @@ render(){
       <header className="App-header">
         <p>
           There are {this.state.stations.length} stations in the database.
-          There are {this.state.scheduleForL.length} stations with arrival times.
+          There are {this.state.scheduleForL.length} scheduled arrivals.
         </p>
       </header>
+      <main>
+        <div id="line-box">
+          <LinePicker 
+          stationsLoading={this.state.stationsLoading}
+          selectedStation={this.state.selectedStation}
+          updateSelectedStation={this.updateSelectedStation}
+          />
+          <LineContainer 
+          currentSchedules = {this.state.scheduleForL} 
+          // fetchLiveData={this.fetchLiveData}
+          />
+        </div>
+      </main>
     </div>
   );
 }
