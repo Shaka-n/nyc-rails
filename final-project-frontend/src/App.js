@@ -22,6 +22,14 @@ const translateStationId = (stations, fullStopId) =>{
   return targetStation.stop_name
 }
   
+const convertPosixToDate = (unix_timestamp)=>{
+  const date = new Date(unix_timestamp * 1000);
+  const hours = date.getHours();
+  const minutes = "0" + date.getMinutes();
+  const seconds = "0" + date.getSeconds();
+  const formattedTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+  return formattedTime
+}
 
 class App extends React.Component{
 
@@ -82,15 +90,31 @@ fetchLiveData = (line) =>{
                 }
               }else{
                 console.log('unique')
+                const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
                 const stationSummInfo = {
-                  stationName: translateStationId(this.state.stations, stopTU.stopId),
+                  stationName: friendlyName,
                   stationId: stopTU.stopId,
                   nextArrival: stopTU.arrival.time}
 
                 this.setState({
                   stationsLoading: false,
                   scheduleForL: [...this.state.scheduleForL, stationSummInfo ]
+                
                 })
+                // This is where you would post to the DB
+                // fetch('http://localhost:3000/transport_events',{
+                //   method: "POST",
+                //   headers: {
+                //     "Content-Type":"application/json",
+                //     Accept: "application/json"
+                //   },
+                //   body: JSON.stringify({
+                //     station_id: stopTU.stopId,
+                //     arrival: convertPosixToDate(stopTU.arrival.time),
+                //     departure: 'nil',
+                //     direction: stopTU.stopId.slice(-1)
+                //   })
+                // })
               }
             }
           })
@@ -101,9 +125,9 @@ fetchLiveData = (line) =>{
   
   }
 
-updateSelectedStation = (s) =>{
-  this.setState(prev => ({...prev, scheduleForL:[], stationsLoading: true, selectedStation: s}))
-  this.fetchLiveData(s)
+updateSelectedStation = (line) =>{
+  this.setState(prev => ({...prev, scheduleForL:[], stationsLoading: true, selectedStation: line}))
+  this.fetchLiveData(line)
   }
 
 render(){
