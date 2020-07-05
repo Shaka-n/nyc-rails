@@ -5,7 +5,7 @@ const LinePicker = (props) =>{
     
 const handleChange = (line) =>{
     props.updateSelectedStation(line)
-    console.log(line)
+    // console.log(line)
 }
     return(
         <div id={"line-picker"}>
@@ -13,7 +13,7 @@ const handleChange = (line) =>{
             {props.stationsLoading && (<div className="lds-dual-ring"></div>)}
             {!props.stationsLoading && (
                 <>
-                <p>The currently selected line is: {props.selectedStation ? props.selectedStation.toUpperCase() : "None"}</p>
+                <p>The currently selected line is: {props.selectedStation ? props.selectedStation.slice(1).toUpperCase() : "None"}</p>
                 <select name="line-selection" id="lines" onChange={(e)=> handleChange(e.target.value)}>
                 <option>Choose a line</option>
                 <option value="-l">L</option>

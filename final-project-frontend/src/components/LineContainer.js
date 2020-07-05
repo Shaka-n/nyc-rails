@@ -5,7 +5,7 @@ const LineContainer = (props) =>{
 
 
 const renderStationSummary = (targetStation) =>{
-    console.log("In the Render Station Summary")    
+    // console.log("In the Render Station Summary")    
 
     // Find the paired stops at each station
     let pairedStops
@@ -18,6 +18,7 @@ const renderStationSummary = (targetStation) =>{
     // XXX
     // console.log("Paired stops", pairedStops)
     return <StationSummary 
+            key={targetStation.stationId}
             stops={pairedStops}
             // name={targetStation.stationName} 
             // direction={targetStation.stationId.slice(-1)} 
@@ -62,7 +63,7 @@ const makeStopPairs = (schedule) =>{
                 height: '400px',
                 overflow: 'scroll'
                 }}>
-                {console.log(props.currentSchedules)}
+                {/* {console.log(props.currentSchedules)} */}
                 {props.currentSchedules.map(station => renderStationSummary(station))}
                 
             </div>

@@ -29,6 +29,7 @@
 
 #line-picker{
   position: relative;
+  color: white;
 }
 .line-container{
   position: relative;
