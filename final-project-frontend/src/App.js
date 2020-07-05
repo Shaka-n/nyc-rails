@@ -94,13 +94,14 @@ fetchLiveData = (line) =>{
               // CHECKING FOR DUPLICATES
               if(this.state.currentSchedule.find(station => station.stationId === stopTU.stopId)){
                 const stationIndex = this.state.currentSchedule.findIndex(station => station.stationId === stopTU.stopId)
-                console.log("Existing Station!")
+                // console.log("Existing Station!")
                 // CHECKING FOR NEW TIMES
                 if(this.state.currentSchedule[stationIndex].nextArrival != stopTU.arrival.time){
-                  console.log("Time Difference!")
+                  // console.log("Time Difference!")
                   let newSchedule = [...this.state.currentSchedule]
                   newSchedule[stationIndex] = {...newSchedule[stationIndex], nextArrival: stopTU.arrival.time}
                   newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
+                  // console.log("New Schedule", newSchedule)
                   this.setState(prevState=>({
                     ...prevState,
                     stationsLoading: false,
