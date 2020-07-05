@@ -41,6 +41,7 @@ state ={
   currentSchedule:[],
   stationsLoading: false,
   selectedLine: 'l',
+  selectedLineComments: [],
   commentFormBody: '',
   currentUser: 'Garen',
   currentUserId: 1
@@ -84,7 +85,7 @@ fetchLiveData = (line) =>{
   request(requestSettings, (error, response, body) => {
     if (!error && response.statusCode === 200) {
       const feed = gtfsRB.FeedMessage.decode(body)
-      console.log(this.state.stations)
+      // console.log(this.state.stations)
       // let stationSummInfo
       feed.entity.forEach((entity) => {
         // console.log(entity)
@@ -112,7 +113,7 @@ fetchLiveData = (line) =>{
               }
               // Adding entries
               else{
-                console.log('unique')
+                // console.log('unique')
                 const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
                 const stationSummInfo = {
                   stationName: friendlyName,
@@ -144,7 +145,40 @@ fetchLiveData = (line) =>{
 updateSelectedStation = (line) =>{
   this.setState(prevState => ({...prevState, currentSchedule:[], stationsLoading: true, selectedStation: line}))
   this.fetchLiveData(line)
+  this.fetchComments(line)
   }
+
+fetchComments = (line) =>{
+  // const targetLine = line.toUpperCase()
+// This right here is credibly stupid. 
+// I can almost forgive myself since the line id for each line would not change in production... 
+// but this is still gross...
+  let line_id = 0
+  switch(line){
+    case '-l': 
+      line_id = 19
+      break
+    case '-ace':
+      line_id = 20
+      break
+    case '-123456':
+      line_id = 21
+      break
+    case '-bdfm':
+      line_id = 22
+      break
+    case "-nqrw":
+      line_id = 23
+      break
+    case '-jz':
+      line_id = 24
+      break
+  }
+  // console.log(line_id)
+  fetch(`${BACKEND}/lines/${line_id}`)
+  .then(response => response.json())
+  .then(line => this.setState({selectedLineComments: line.comments}))
+}
 
 handleFormChange = (e)=>{
   this.setState({
@@ -175,7 +209,7 @@ handleFormSubmit = (e) =>{
 }
 
 render(){
-  console.log(this.state.currentSchedule)
+  // console.log(this.state.currentSchedule)
   return (
     <div className="App">
       <header className="App-header">
@@ -196,6 +230,7 @@ render(){
           // fetchLiveData={this.fetchLiveData}
           />
           <CommentContainer 
+          selectedLineComments={this.state.selectedLineComments}
           commentFormBody={this.state.commentFormBody} 
           handleFormChange={this.handleFormChange}
           handleFormSubmit={this.handleFormSubmit}
