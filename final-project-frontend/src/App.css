@@ -1,5 +1,7 @@
 .App {
   text-align: center;
+  background-color: #282c34;
+
 }
 
 .App-header {
@@ -19,13 +21,70 @@
 
 #line-box{
   background-color: darkkhaki;
-  height: 40vh;
+  width: 100vw;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
 }
 
-.station-summary{
+#line-picker{
+  position: relative;
+}
+.line-container{
+  position: relative;
   color: black;
+  border: 2px;
+  width: 600px;
+  height: 400px;
+  overflow: scroll;
+  display: flex;
+  flex-basis: auto;
+  flex-flow: row wrap;
+  /* align-content: space-evenly; */
 }
 
+.station-summary{
+  /* position: relative; */
+  margin: 2px;
+  padding: 0.010%;
+  width: 200px;
+  background-color:#A7A9AC;
+  color: white;
+  border-radius: 5px;
+  -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000;
+   box-shadow:         inset 0 0 10px #000000;
+}
+
+.station-summary h3{
+  background-color: darkolivegreen;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+
+/* loading ring */
+.lds-dual-ring {
+  display: inline-block;
+  width: 80px;
+  height: 80px;
+}
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border-radius: 50%;
+  border: 6px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
