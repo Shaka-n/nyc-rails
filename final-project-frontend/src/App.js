@@ -10,10 +10,10 @@ import CommentContainer from './components/CommentContainer.js'
 const ProtoBuf = require('protobufjs')
 const request = require('request')
 const gtfsRB = require('gtfs-rb').transit_realtime
-
 const dotenv = require("dotenv");
 dotenv.config();
 const API_KEY = process.env.REACT_APP_API_KEY
+const BACKEND = "http://localhost:3000"
 
 
 const translateStationId = (stations, fullStopId) =>{
@@ -42,7 +42,8 @@ state ={
   stationsLoading: false,
   selectedLine: 'l',
   commentFormBody: '',
-  currentUser:''
+  currentUser: 'Garen',
+  currentUserId: 1
 }
 
 componentDidMount(){  
@@ -151,8 +152,26 @@ handleFormChange = (e)=>{
   })
 }
 handleFormSubmit = (e) =>{
-  console.log(e.target.value)
+  e.preventDefault()
+  console.log("Comment:", this.state.commentFormBody)
+  console.log("Line:", this.state.selectedLine)
+  console.log("Current User:", this.state.currentUser)
   // This is where the fetch POST to the backend needs to happen.
+  const targetLine= this.state.selectedLine.toUpperCase()
+  fetch(`${BACKEND}/comments`,{
+    method: "POST",
+    headers:{ 
+      "Content-Type" : "application/json",
+      Accept : "application/json"
+    },
+    body: JSON.stringify({
+      body: this.state.commentFormBody,
+      user_id: this.state.currentUserId,
+      name: targetLine
+    })
+  })
+  .then(response => response.json())
+  .then(console.log)
 }
 
 render(){
