@@ -9,6 +9,7 @@ const CommentContainer= (props)=>{
             <CommentForm 
             commentFormBody={props.commentFormBody}
             handleFormChange={props.handleFormChange}
+            handleFormSubmit={props.handleFormSubmit}
             />
             {/* {props.selectedLineComments.map(comment => <Comment comment={comment}/>)} */}
         </div>
