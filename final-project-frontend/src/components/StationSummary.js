@@ -27,18 +27,20 @@ const StationSummary = (props) =>{
         // console.log(props.stops)
         if(props.stops.length === 1){
             return (
-                <>
+                <div>
                 <h3>{props.stops[0].stationName}</h3>
+                <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.stops)}><span >☆</span></div>
                 <div className={"northbound-station"}>
                     <p>Direction: {determineDirection(props.stops[0].stationId)}</p>
                     <p>Next train: {convertPosixToDate(props.stops[0].nextArrival)} </p>
                 </div>
-                </>
+                </div>
                 )
         } else{
             return(
-                <>
+                <div>
                     <h3> {props.stops[0].stationName} </h3>
+                    <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.stops)}><span >☆</span></div>
                     <div className={"northbound-station"}>
                         <p>Direction: {determineDirection(props.stops[1].stationId)}</p>
                         <p>Next train: {convertPosixToDate(props.stops[1].nextArrival)} </p>
@@ -47,7 +49,7 @@ const StationSummary = (props) =>{
                         <p>Direction: {determineDirection(props.stops[0].stationId)} </p>
                         <p>Next train: {convertPosixToDate(props.stops[0].nextArrival)}</p>
                     </div>
-                </>
+                </div>
             )
         }
     }

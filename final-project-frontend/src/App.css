@@ -93,3 +93,14 @@
     transform: rotate(360deg);
   }
 }
+
+/* Favorites */
+.favorite > span{
+  z-index:-1;
+}
+.favorite > span:hover:before {
+  content: "\2605";
+  position: relative;
+  z-index: 1;
+  color: gold;
+}
