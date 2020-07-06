@@ -5,6 +5,7 @@ import LineContainer from './components/LineContainer.js'
 import LinePicker from './components/LinePicker.js'
 import CommentContainer from './components/CommentContainer.js'
 import ServiceAlertTicker from './components/ServiceAlertTicker.js'
+import FavoriteContainer from './components/FavoriteContainer';
 // import proto from './src/services/config/nyct-subway.proto'
 // import proto from './src/services/config/gtfs-realtime'
 
@@ -59,8 +60,6 @@ componentDidMount(){
         .then(resp => console.log(this.state.stations))
     }
     fetchStationData()
-    fetchUserFavorites(currentUserId)
-    
 // requesting live feed data
 // this.fetchLiveData()
 }
@@ -91,53 +90,40 @@ fetchLiveData = (line) =>{
       const feed = gtfsRB.FeedMessage.decode(body)
       // console.log(this.state.stations)
       // let stationSummInfo
-      feed.entity.forEach((entity) => {
-        // console.log(entity)
-        // if(entity.vehicle){
-        //   console.log(entity.vehicle)
-        // }
-        if (entity.tripUpdate) {
-          entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
-            // translateStationId(this.state.stations, stopTU.stopId)
-            if(stopTU.arrival){
-              // CHECKING FOR DUPLICATES
-              if(this.state.currentSchedule.find(station => station.stationId === stopTU.stopId)){
-                const stationIndex = this.state.currentSchedule.findIndex(station => station.stationId === stopTU.stopId)
-                // console.log("Existing Station!")
-                // CHECKING FOR NEW TIMES
-                if(this.state.currentSchedule[stationIndex].nextArrival != stopTU.arrival.time){
-                  // console.log("Time Difference!")
-                  let newSchedule = [...this.state.currentSchedule]
-                  newSchedule[stationIndex] = {...newSchedule[stationIndex], nextArrival: stopTU.arrival.time}
-                  newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
-                  // console.log("New Schedule", newSchedule)
-                  this.setState(prevState=>({
-                    ...prevState,
-                    stationsLoading: false,
-                    currentSchedule: newSchedule
-                  }))
+      let newSchedule = []
+    feed.entity.forEach((entity) => {
+            // console.log(entity)
+            // if(entity.vehicle){
+            //   console.log(entity.vehicle)
+            // }
+            if (entity.tripUpdate) {
+              entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
+                // translateStationId(this.state.stations, stopTU.stopId)
+                if(stopTU.arrival){
+                  // CHECKING FOR DUPLICATES
+                  if(newSchedule.find(station => station.stationId === stopTU.stopId)){
+                    // console.log("Existing Station!")
+                    // console.log('unique')
+                    console.log("duplicate")
+                    
+                  }else{
+                    const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
+                    const stationSummInfo = {
+                      stationName: friendlyName,
+                      stationId: stopTU.stopId,
+                      nextArrival: stopTU.arrival.time
+                    }
+                    newSchedule.push(stationSummInfo)
+                  }
                 }
-              }
-              // Adding entries
-              else{
-                // console.log('unique')
-                const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
-                const stationSummInfo = {
-                  stationName: friendlyName,
-                  stationId: stopTU.stopId,
-                  nextArrival: stopTU.arrival.time}
-
-                this.setState({
-                  stationsLoading: false,
-                  currentSchedule: [...this.state.currentSchedule, stationSummInfo ]
-                
-                })
-        //         // This is where you would post to the DB
-              }
+              })
             }
           })
-        }
-      })
+    newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
+    this.setState({
+      stationsLoading: false,
+      currentSchedule: newSchedule
+    })
       // This is where you should update state
       // this.setState(prevState =>({
       //   ...prevState,
@@ -154,6 +140,7 @@ updateSelectedStation = (line) =>{
   this.fetchLiveData(line)
   this.fetchComments(line)
   this.fetchServiceAlerts()
+  // this.getUserFavorites(this.state.currentUserId)
   }
 
 fetchServiceAlerts = () =>{
@@ -258,10 +245,13 @@ deleteComment = (id) =>{
   .then(console.log)
 }
 
-fetchUserFavorites = (userId) =>{
+getUserFavorites = (userId) =>{
+
   fetch(`${BACKEND}/users/${userId}`)
   .then(response => response.json())
-  .then(console.log)
+  .then(user =>{
+    this.setState({currentUserFavorites: user.favorites})
+  })
 }
 
 favoriteStation = (e, stops) =>{
@@ -331,8 +321,11 @@ favoriteStation = (e, stops) =>{
 }
 
 render(){
-  // console.log(this.state.currentSchedule)
+  console.log(this.state.currentSchedule)
   // console.log(this.state.selectedLineComments)
+  // console.log(this.state.currentUserFavorites)
+  // console.log(this.state.selectedLine)
+  // console.log(this.state.serviceAlerts)
   return (
     <div className="App">
       <header className="App-header">
@@ -344,8 +337,13 @@ render(){
       </header>
       <main>
         <div>
+          <FavoriteContainer
+          favorites={this.state.currentUserFavorites}
+          currentSchedule={this.state.currentSchedule}
+          />
           <ServiceAlertTicker 
           serviceAlerts={this.state.serviceAlerts}
+          selectedLine={this.state.selectedLine}
           />
           </div>
           <LinePicker 
