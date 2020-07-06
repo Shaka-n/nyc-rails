@@ -4,6 +4,7 @@ import './App.css';
 import LineContainer from './components/LineContainer.js'
 import LinePicker from './components/LinePicker.js'
 import CommentContainer from './components/CommentContainer.js'
+import ServiceAlertTicker from './components/ServiceAlertTicker.js'
 // import proto from './src/services/config/nyct-subway.proto'
 // import proto from './src/services/config/gtfs-realtime'
 
@@ -44,7 +45,8 @@ state ={
   selectedLineComments: [],
   commentFormBody: '',
   currentUser: 'Garen',
-  currentUserId: 1
+  currentUserId: 1,
+  serviceAlerts: []
 }
 
 componentDidMount(){  
@@ -89,6 +91,9 @@ fetchLiveData = (line) =>{
       // let stationSummInfo
       feed.entity.forEach((entity) => {
         // console.log(entity)
+        // if(entity.vehicle){
+        //   console.log(entity.vehicle)
+        // }
         if (entity.tripUpdate) {
           entity.tripUpdate.stopTimeUpdate.map( stopTU =>{
             // translateStationId(this.state.stations, stopTU.stopId)
@@ -146,6 +151,33 @@ updateSelectedStation = (line) =>{
   this.setState(prevState => ({...prevState, currentSchedule:[], stationsLoading: true, selectedStation: line}))
   this.fetchLiveData(line)
   this.fetchComments(line)
+  this.fetchServiceAlerts()
+  }
+
+fetchServiceAlerts = () =>{
+  const requestSettings = {
+    method: 'GET',
+    url: `https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/camsys%2Fsubway-alerts`,
+    encoding: null,
+    headers: { 
+      "Content-Type": "application/x-protobuf",
+      "Accept": "application/x-protobuf",
+      "x-api-key": API_KEY }
+    }
+
+  request(requestSettings, (error, response, body) => {
+    if (!error && response.statusCode === 200) {
+      const feed = gtfsRB.FeedMessage.decode(body)
+      const newServiceAlerts = []
+      feed.entity.map(entity =>{
+        if(entity.alert.descriptionText.translation[0].text[0] !== '<'){
+          return newServiceAlerts.push({alert : entity.alert.descriptionText.translation[0].text})
+        }
+      })
+      // console.log(newServiceAlerts)
+      this.setState({ serviceAlerts : newServiceAlerts})
+      }
+  })
   }
 
 fetchComments = (line) =>{
@@ -185,7 +217,9 @@ handleFormChange = (e)=>{
     commentFormBody: e.target.value
   })
 }
+
 handleFormSubmit = (e) =>{
+  // TODO: Need to add the comment to the DOM when the button is pressed.
   e.preventDefault()
   console.log("Comment:", this.state.commentFormBody)
   console.log("Line:", this.state.selectedLine)
@@ -208,23 +242,44 @@ handleFormSubmit = (e) =>{
   .then(console.log)
 }
 
+deleteComment = (id) =>{
+  // TODO: Need to remove comment from the DOM when the button is pressed.
+  console.log(id)
+  fetch(`${BACKEND}/comments/${id}`,{
+    method: "DELETE",
+    headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+    }
+  })
+  .then(response => response.json())
+  .then(console.log)
+}
+
 render(){
   // console.log(this.state.currentSchedule)
+  // console.log(this.state.selectedLineComments)
   return (
     <div className="App">
       <header className="App-header">
         <p>
           There are {this.state.stations.length} stations in the database.
           There are {this.state.currentSchedule.length} scheduled arrivals.
+          There are {this.state.serviceAlerts.length} active service alerts.
         </p>
       </header>
       <main>
-
+        <div>
+          <ServiceAlertTicker 
+          serviceAlerts={this.state.serviceAlerts}
+          />
+          </div>
           <LinePicker 
           stationsLoading={this.state.stationsLoading}
           selectedStation={this.state.selectedStation}
           updateSelectedStation={this.updateSelectedStation}
           />
+          <div id={"content"}>
           <LineContainer 
           currentSchedules = {this.state.currentSchedule} 
           // fetchLiveData={this.fetchLiveData}
@@ -234,7 +289,9 @@ render(){
           commentFormBody={this.state.commentFormBody} 
           handleFormChange={this.handleFormChange}
           handleFormSubmit={this.handleFormSubmit}
+          deleteComment={this.deleteComment}
           />
+          </div>
       </main>
     </div>
   );
