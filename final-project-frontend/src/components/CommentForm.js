@@ -6,10 +6,11 @@ const CommentForm = (props)=>{
         <div id={'comment-form'}>
             <form onSubmit={e => props.handleFormSubmit(e)}>
                 <input 
-                type="text" 
+                type="textarea" 
                 onChange={e => 
                 props.handleFormChange(e)}
                 value={props.commentFormBody}
+                style={{height:"100px", width:"400px"}}
                 />
                 <input type="submit"/>
             </form>

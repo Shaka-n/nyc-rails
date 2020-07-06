@@ -5,10 +5,12 @@ const ServiceAlertTicker = (props) =>{
     return(
         <>
         <div className={"ticker"}>
-            <div className={"ticker__list"} style={{animation: "ticker 60s infinite linear"}}>
+        {/* style={{animation: "ticker 60s infinite linear"}} */}
+            <div className={"ticker__list"} >
                 {props.serviceAlerts.map(alert =>{
                     if(alert.alert.includes("[L]")){
-                        return <div key={alert.id} className={"ticker__item"} style={{maxHeight: "20px", width: "300px"}}>{alert.alert}</div>
+                        // style={{maxHeight: "20px", width: "500px"}}
+                        return <div key={alert.id} className={"ticker__item"}>{alert.alert}</div>
                     }
                 })}
             </div>

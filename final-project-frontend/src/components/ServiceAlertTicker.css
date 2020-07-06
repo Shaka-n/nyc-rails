@@ -8,13 +8,14 @@ body {
   .ticker__list {
     display: flex;
     margin-top: 20px;
-    animation: ticker 60s infinite linear;
+    animation: ticker 30s infinite linear;
   }
   .ticker:hover .ticker__list {
     animation-play-state: paused;
   }
   .ticker__item {
-    margin-right: 200px;
+    margin-right: 20px;
+    margin-left: 100px;
     color: white;
   }
   @-moz-keyframes ticker {
