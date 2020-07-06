@@ -20,6 +20,7 @@ const renderStationSummary = (targetStation) =>{
     return <StationSummary 
             key={targetStation.stationId}
             stops={pairedStops}
+            favoriteStation={props.favoriteStation}
             // name={targetStation.stationName} 
             // direction={targetStation.stationId.slice(-1)} 
             // nextArrival={targetStation.nextArrival}

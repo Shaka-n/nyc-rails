@@ -46,6 +46,7 @@ state ={
   commentFormBody: '',
   currentUser: 'Garen',
   currentUserId: 1,
+  currentUserFavorites: [],
   serviceAlerts: []
 }
 
@@ -58,6 +59,7 @@ componentDidMount(){
         .then(resp => console.log(this.state.stations))
     }
     fetchStationData()
+    fetchUserFavorites(currentUserId)
     
 // requesting live feed data
 // this.fetchLiveData()
@@ -256,6 +258,78 @@ deleteComment = (id) =>{
   .then(console.log)
 }
 
+fetchUserFavorites = (userId) =>{
+  fetch(`${BACKEND}/users/${userId}`)
+  .then(response => response.json())
+  .then(console.log)
+}
+
+favoriteStation = (e, stops) =>{
+  const gtfsStopId = stops[0].stationId.slice(0, -1)
+  console.log(gtfsStopId)
+
+  if(e.target.textContent === "★"){
+    e.target.textContent = "☆"
+    const newFavorites = this.state.currentUserFavorites.filter(favorite => favorite !== stops[0].stationId)
+    this.setState(prevState=>({
+      ...prevState,
+      currentUserFavorites: newFavorites
+    }))
+
+    fetch(`${BACKEND}/favorites/1`,{
+      method: "DELETE",
+      headers: {
+        "Content-Type":"application/json",
+        Accept : "application/json"
+      },
+      body: JSON.stringify({
+        user_id: this.state.currentUserId,
+        gtfs_stop_id: gtfsStopId
+      })
+    })
+    .then(response => response.json())
+    .then(console.log)
+
+  }else{
+    e.target.textContent = "★"
+    console.log(stops)
+  if(stops[1]){
+    this.setState( prevState =>({
+      ...prevState,
+      currentUserFavorites: [
+        ...prevState.currentUserFavorites,
+        stops[0].stationId,
+        stops[1].stationId
+      ]
+    })
+    )
+  }else{
+    this.setState( prevState =>({
+      ...prevState,
+      currentUserFavorites: [
+        ...prevState.currentUserFavorites,
+        stops[0].stationId
+      ]}))
+  }
+
+  fetch(`${BACKEND}/favorites`,{
+    method: "POST",
+    headers: {
+      "Content-Type":"application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify({
+      user_id: this.state.currentUserId,
+      gtfs_stop_id: gtfsStopId
+    })
+  })
+  .then(response => response.json())
+  .then(console.log)
+  
+  }
+  
+}
+
 render(){
   // console.log(this.state.currentSchedule)
   // console.log(this.state.selectedLineComments)
@@ -282,6 +356,7 @@ render(){
           <div id={"content"}>
           <LineContainer 
           currentSchedules = {this.state.currentSchedule} 
+          favoriteStation={this.favoriteStation}
           // fetchLiveData={this.fetchLiveData}
           />
           <CommentContainer 
