@@ -1,9 +1,22 @@
 import React from 'react'
 import Comment from './Comment.js'
 import CommentForm from './CommentForm.js'
+import { render } from '@testing-library/react'
 
 
 const CommentContainer= (props)=>{
+
+    const renderComments = () =>{
+        if(props.selectedLineComments && props.selectedLineComments.length>0){
+            return props.selectedLineComments.map(comment => {
+                return <Comment 
+                key={comment.id} 
+                commentBody={comment.body}
+                deleteComment={props.deleteComment}
+                commentId={comment.id}
+                />})
+        }
+    }
     
     return(
 
@@ -15,13 +28,7 @@ const CommentContainer= (props)=>{
             handleFormSubmit={props.handleFormSubmit}
             />
             <div id={"comment-list"}>
-            {props.selectedLineComments.map(comment => {
-            return <Comment 
-            key={comment.id} 
-            commentBody={comment.body}
-            deleteComment={props.deleteComment}
-            commentId={comment.id}
-            />})}
+            {renderComments()}
             </div>
         </div>
     )

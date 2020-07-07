@@ -4,6 +4,10 @@ body {
   .ticker {
     display: flex;
     color: white;
+    overflow: hidden;
+    width: 100vw;
+    flex-direction: row;
+    justify-content: flex-start;
   }
   .ticker__list {
     display: flex;
@@ -15,7 +19,8 @@ body {
   }
   .ticker__item {
     margin-right: 20px;
-    margin-left: 100px;
+    margin-left: 20px;
+    width: 600px;
     color: white;
   }
   @-moz-keyframes ticker {

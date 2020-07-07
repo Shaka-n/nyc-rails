@@ -20,11 +20,17 @@ const BACKEND = "http://localhost:3000"
 
 const translateStationId = (stations, fullStopId) =>{
   // const testId = "L03N"
+  // console.log("fullStopId", fullStopId)
   const stopId = fullStopId.substring(0, fullStopId.length - 1)
-  // console.log(stopId)
+  // console.log("StopId:", stopId)
   const targetStation = stations.find(station => station.gtfs_stop_id === stopId)
-  // console.log(targetStation.stop_name)
-  return targetStation.stop_name
+  // console.log(targetStation)
+  if(targetStation){
+    return targetStation.stop_name
+  }else{
+    return "Special Service"
+  }
+  
 }
   
 const convertPosixToDate = (unix_timestamp)=>{
@@ -42,7 +48,7 @@ state ={
   stations: [],
   currentSchedule:[],
   stationsLoading: false,
-  selectedLine: 'l',
+  selectedLine: null,
   selectedLineComments: [],
   commentFormBody: '',
   currentUser: 'Garen',
@@ -65,9 +71,13 @@ componentDidMount(){
 }
 
 fetchLiveData = (line) =>{
+  let targetLine = line
+  if(line === "-12345"){
+    targetLine = ""
+  }
   const requestSettings = {
     method: 'GET',
-    url: `https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs${line}`,
+    url: `https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds/nyct%2Fgtfs${targetLine}`,
     encoding: null,
     headers: { 
       "Content-Type": "application/x-protobuf",
@@ -136,7 +146,9 @@ fetchLiveData = (line) =>{
   }
 
 updateSelectedStation = (line) =>{
-  this.setState(prevState => ({...prevState, currentSchedule:[], stationsLoading: true, selectedStation: line}))
+  const parsedLineValue = line.substr(1)
+
+  this.setState(prevState => ({...prevState, currentSchedule:[], stationsLoading: true, selectedLine: parsedLineValue}))
   this.fetchLiveData(line)
   this.fetchComments(line)
   this.fetchServiceAlerts()
@@ -321,7 +333,10 @@ favoriteStation = (e, stops) =>{
 }
 
 render(){
-  console.log(this.state.currentSchedule)
+  console.log(this.state)
+  // this.state.stations.forEach(station => console.log(station.gtfs_stop_id))
+  // console.log(this.state.stations)
+  // console.log(this.state.currentSchedule)
   // console.log(this.state.selectedLineComments)
   // console.log(this.state.currentUserFavorites)
   // console.log(this.state.selectedLine)
@@ -337,10 +352,10 @@ render(){
       </header>
       <main>
         <div>
-          <FavoriteContainer
+          {/* <FavoriteContainer
           favorites={this.state.currentUserFavorites}
           currentSchedule={this.state.currentSchedule}
-          />
+          /> */}
           <ServiceAlertTicker 
           serviceAlerts={this.state.serviceAlerts}
           selectedLine={this.state.selectedLine}

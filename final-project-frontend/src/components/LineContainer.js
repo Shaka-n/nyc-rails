@@ -59,7 +59,7 @@ const makeStopPairs = (schedule) =>{
                 display: 'flex', 
                 flexFlow: 'row wrap', 
                 alignContent: 'space-between',
-                backgroundColor: '#282c34', 
+                backgroundColor: '#4D5357', 
                 width: '650px',
                 height: '400px',
                 overflow: 'scroll'
