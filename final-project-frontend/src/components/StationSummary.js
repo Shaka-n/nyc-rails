@@ -24,33 +24,34 @@ const StationSummary = (props) =>{
     }
 
     const renderSummary = () =>{
-        // console.log(props.stops)
-        if(props.stops.length === 1){
-            return (
-                <div>
-                <h3>{props.stops[0].stationName}</h3>
-                <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.stops)}><span >☆</span></div>
-                <div className={"northbound-station"}>
-                    <p>Direction: {determineDirection(props.stops[0].stationId)}</p>
-                    <p>Next train: {convertPosixToDate(props.stops[0].nextArrival)} </p>
-                </div>
-                </div>
-                )
-        } else{
+        // console.log(props.station)
+        if(props.station.d2){
             return(
                 <div>
-                    <h3> {props.stops[0].stationName} </h3>
-                    <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.stops)}><span >☆</span></div>
+                    <h3> {props.station.d2.stationName} </h3>
+                    <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station)}><span >☆</span></div>
                     <div className={"northbound-station"}>
-                        <p>Direction: {determineDirection(props.stops[1].stationId)}</p>
-                        <p>Next train: {convertPosixToDate(props.stops[1].nextArrival)} </p>
+                        <p>Direction: {determineDirection(props.station.d2.stationId)}</p>
+                        <p>Next train: {convertPosixToDate(props.station.d2.nextArrival)} </p>
                     </div>
                     <div className={"southbound-station"}>
-                        <p>Direction: {determineDirection(props.stops[0].stationId)} </p>
-                        <p>Next train: {convertPosixToDate(props.stops[0].nextArrival)}</p>
+                        <p>Direction: {determineDirection(props.station.d1.stationId)} </p>
+                        <p>Next train: {convertPosixToDate(props.station.d1.nextArrival)}</p>
                     </div>
                 </div>
             )
+            
+        } else{
+            return (
+                <div>
+                <h3>{props.station.d1.stationName}</h3>
+                <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station.d1)}><span >☆</span></div>
+                <div className={"northbound-station"}>
+                    <p>Direction: {determineDirection(props.station.d1.stationId)}</p>
+                    <p>Next train: {convertPosixToDate(props.station.d1.nextArrival)} </p>
+                </div>
+                </div>
+                )
         }
     }
 
