@@ -54,7 +54,8 @@ state ={
   currentUser: 'Garen',
   currentUserId: 1,
   currentUserFavorites: [],
-  serviceAlerts: []
+  serviceAlerts: [],
+  favoriteStations: []
 }
 
 componentDidMount(){  
@@ -66,6 +67,7 @@ componentDidMount(){
         .then(resp => console.log(this.state.stations))
     }
     fetchStationData()
+    this.getUserFavorites(this.state.currentUserId)
 // requesting live feed data
 // this.fetchLiveData()
 }
@@ -101,6 +103,7 @@ fetchLiveData = (line) =>{
       // console.log(this.state.stations)
       // let stationSummInfo
       let newSchedule = []
+      let newFavorites = []
     feed.entity.forEach((entity) => {
             // console.log(entity)
             // if(entity.vehicle){
@@ -117,13 +120,18 @@ fetchLiveData = (line) =>{
                     console.log("duplicate")
                     
                   }else{
+                    console.log("stop Id", stopTU.stopId)
                     const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
                     const stationSummInfo = {
+                      // dbId: dbId,
                       stationName: friendlyName,
                       stationId: stopTU.stopId,
                       nextArrival: stopTU.arrival.time
                     }
                     newSchedule.push(stationSummInfo)
+                    if(this.state.currentUserFavorites.find(stationId => stationId === stopTU.stopId.slice(0, -1))){
+                      newFavorites.push(stationSummInfo)
+                    }
                   }
                 }
               })
@@ -132,7 +140,8 @@ fetchLiveData = (line) =>{
     newSchedule.sort((a, b) => (a.stationId > b.stationId) ? -1 : 1)
     this.setState({
       stationsLoading: false,
-      currentSchedule: newSchedule
+      currentSchedule: newSchedule,
+      favoriteStations: newFavorites
     })
       // This is where you should update state
       // this.setState(prevState =>({
@@ -335,12 +344,13 @@ favoriteStation = (e, stops) =>{
 render(){
   console.log(this.state)
   // this.state.stations.forEach(station => console.log(station.gtfs_stop_id))
-  // console.log(this.state.stations)
-  // console.log(this.state.currentSchedule)
+  console.log(this.state.stations)
+  console.log(this.state.currentSchedule)
   // console.log(this.state.selectedLineComments)
-  // console.log(this.state.currentUserFavorites)
+  console.log(this.state.currentUserFavorites)
   // console.log(this.state.selectedLine)
   // console.log(this.state.serviceAlerts)
+  console.log(this.state.favoriteStations)
   return (
     <div className="App">
       <header className="App-header">
@@ -352,10 +362,10 @@ render(){
       </header>
       <main>
         <div>
-          {/* <FavoriteContainer
-          favorites={this.state.currentUserFavorites}
+          <FavoriteContainer
+          favorites={this.state.favoriteStations}
           currentSchedule={this.state.currentSchedule}
-          /> */}
+          />
           <ServiceAlertTicker 
           serviceAlerts={this.state.serviceAlerts}
           selectedLine={this.state.selectedLine}

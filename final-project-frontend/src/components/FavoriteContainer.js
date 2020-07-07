@@ -4,43 +4,52 @@ import StationSummary from './StationSummary.js'
 
 const FavoriteContainer = (props) =>{
 
-    const renderStationSummary = (targetStation) =>{
-        // console.log("In the Render Station Summary")    
+    const findFavorites = () =>{
+        props.favorites.map(favorite =>{
+
+        })
+    }
+
+    const renderFavoriteSummaries = (schedule) =>{
+        console.log("Original Schedule", schedule)
+        let pairedStopsSchedule =[]
+        for(let i = 0;i<schedule.length-1;i++){
+            let j = i + 1
+            console.log("Schedule[i]", schedule[i].stationName)
+            console.log("Schedule[j]", schedule[j].stationName)
+            if(j===schedule.length){
+                pairedStopsSchedule.push({d1:schedule[j]})
+                console.log('last')
+            }else if(schedule[i].stationName === schedule[j].stationName){
+                pairedStopsSchedule.push({d1:schedule[i], d2:schedule[j]})
+                i++
+                console.log('pair')
+            }
+            else{
+                console.log('single')
+                pairedStopsSchedule.push({d1:schedule[i]})
+            }
     
-        // Find the paired stops at each station
-        let pairedStops
-            pairedStops = props.currentSchedules.filter(stop => stop.stationName===targetStation.stationName)
-        // makeStopPairs(props.currentSchedules)
-        // Render each stop in a StationSummary component.
-        // XXX
-        // THIS IS WHERE THE DOUBLING UP IS HAPPENING. BOTH NORTH AND SOUTHBOUND TRIPS END UP IN PAIRS.
-        //  NEED TO MAKE SOME SORT OF REDUCER TO SKIP PAST AN ENTRY IF THERE IS ALREADY A PAIR CONTAINING IT.
-        // XXX
-        // console.log("Paired stops", pairedStops)
-        return <StationSummary 
-                key={targetStation.stationId}
-                stops={pairedStops}
-                favoriteStation={props.favoriteStation}
-                // name={targetStation.stationName} 
-                // direction={targetStation.stationId.slice(-1)} 
-                // nextArrival={targetStation.nextArrival}
-                />
-            
+        }
+        console.log("Paired Stops Schedule", pairedStopsSchedule)
+        return pairedStopsSchedule.map(station =>{
+            return <StationSummary 
+            // key={pairedStops}
+            station = {station}
+            favoriteStation={props.favoriteStation}
+    
+            />
+        })
     }
 
     return(
         <div id={"favorite-container"}>
             <h4>My Favorites</h4>
-            {props.favorites.map(favorite=>{
-                props.currentSchedule.map(stop =>{
-                    if(stop.stationId.includes(favorite)){
-                        return renderStationSummary(stop)
-                    }
-                })
-            })}
+            {/* {renderFavoriteSummaries(props.currentUserFavorites)} */}
         </div>
     )
 }
+
 
 
 export default FavoriteContainer

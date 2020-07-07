@@ -55,12 +55,9 @@ const renderStationSummaries = (schedule) =>{
     return pairedStopsSchedule.map(station =>{
         return <StationSummary 
         // key={pairedStops}
-        // stops={pairedStops}
         station = {station}
         favoriteStation={props.favoriteStation}
-        // name={targetStation.stationName} 
-        // direction={targetStation.stationId.slice(-1)} 
-        // nextArrival={targetStation.nextArrival}
+
         />
     })
 }
