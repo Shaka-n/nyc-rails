@@ -18,7 +18,7 @@ const handleChange = (line) =>{
                 <option>Choose a line</option>
                 <option value="-l">L</option>
                 <option value="-ace">A,C,E</option>
-                <option value="-12345">1,2,3,4,5,6</option>
+                <option value="-123456">1,2,3,4,5,6</option>
                 <option value="-bdfm">B,D,F,M</option>
                 <option value="-nqrw">N,Q,R,W</option>
                 <option value="-jz">J,Z</option>
