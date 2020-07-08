@@ -2,8 +2,8 @@ import React from 'react'
 import './ServiceAlertTicker.css'
 
 const ServiceAlertTicker = (props) =>{
-    console.log(props.serviceAlerts)
-    console.log(props.selectedLine)
+    // console.log(props.serviceAlerts)
+    // console.log(props.selectedLine)
 
     const tickerItemStyle = () =>{
         return(

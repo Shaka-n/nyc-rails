@@ -3,15 +3,18 @@ body {
   }
   .ticker {
     display: flex;
-    color: white;
+    color: gold;
+    background-color: black;
     overflow: hidden;
     width: 100vw;
+    padding: 5px;
     flex-direction: row;
     justify-content: flex-start;
   }
   .ticker__list {
     display: flex;
     margin-top: 20px;
+    margin-bottom: 20px;
     animation: ticker 30s infinite linear;
   }
   .ticker:hover .ticker__list {
@@ -21,7 +24,7 @@ body {
     margin-right: 20px;
     margin-left: 20px;
     width: 600px;
-    color: white;
+    color: gold;
   }
   @-moz-keyframes ticker {
     100% {

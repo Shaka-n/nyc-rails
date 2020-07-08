@@ -2,10 +2,12 @@ import React from 'react'
 
 const Comment = (props) =>{
 return(
-    <div style={{display:"flex", color:"white"}}>
+    <div className={'comment'}>
         {/* <p>{props.user} said:</p> */}
         <p>{props.commentBody}</p>
-        <button onClick={() => props.deleteComment(props.commentId)}>X</button>
+        <button 
+        onClick={() => props.deleteComment(props.commentId)}
+        >X</button>
         {/* <p>at {props.created_at}</p> */}
     </div>
 )

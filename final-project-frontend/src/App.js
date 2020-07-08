@@ -117,10 +117,10 @@ fetchLiveData = (line) =>{
                   if(newSchedule.find(station => station.stationId === stopTU.stopId)){
                     // console.log("Existing Station!")
                     // console.log('unique')
-                    console.log("duplicate")
+                    // console.log("duplicate")
                     
                   }else{
-                    console.log("stop Id", stopTU.stopId)
+                    // console.log("stop Id", stopTU.stopId)
                     const friendlyName = translateStationId(this.state.stations, stopTU.stopId)
                     const stationSummInfo = {
                       // dbId: dbId,
@@ -357,7 +357,7 @@ render(){
   // console.log(this.state.currentSchedule)
   // console.log(this.state.selectedLineComments)
   // console.log(this.state.currentUserFavorites)
-  console.log(this.state.selectedLine)
+  // console.log(this.state.selectedLine)
   // console.log(this.state.serviceAlerts)
   // console.log(this.state.favoriteStations)
   return (
@@ -375,6 +375,7 @@ render(){
           favorites={this.state.favoriteStations}
           currentSchedule={this.state.currentSchedule}
           favoriteStation={this.favoriteStation}
+          
           />
           <ServiceAlertTicker 
           serviceAlerts={this.state.serviceAlerts}

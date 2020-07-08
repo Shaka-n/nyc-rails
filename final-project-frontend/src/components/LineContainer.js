@@ -31,27 +31,27 @@ const renderStationSummary = (pairedStopsSchedule) =>{
         
 }
 const renderStationSummaries = (schedule) =>{
-    console.log("Original Schedule", schedule)
+    // console.log("Original Schedule", schedule)
     let pairedStopsSchedule =[]
     for(let i = 0;i<schedule.length-1;i++){
         let j = i + 1
-        console.log("Schedule[i]", schedule[i].stationName)
-        console.log("Schedule[j]", schedule[j].stationName)
+        // console.log("Schedule[i]", schedule[i].stationName)
+        // console.log("Schedule[j]", schedule[j].stationName)
         if(j===schedule.length){
             pairedStopsSchedule.push({d1:schedule[j]})
-            console.log('last')
+            // console.log('last')
         }else if(schedule[i].stationName === schedule[j].stationName){
             pairedStopsSchedule.push({d1:schedule[i], d2:schedule[j]})
             i++
-            console.log('pair')
+            // console.log('pair')
         }
         else{
-            console.log('single')
+            // console.log('single')
             pairedStopsSchedule.push({d1:schedule[i]})
         }
 
     }
-    console.log("Paired Stops Schedule", pairedStopsSchedule)
+    // console.log("Paired Stops Schedule", pairedStopsSchedule)
     return pairedStopsSchedule.map(station =>{
         return <StationSummary 
         // key={pairedStops}
