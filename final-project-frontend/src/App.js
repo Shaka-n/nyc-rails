@@ -230,7 +230,7 @@ handleFormChange = (e)=>{
 
 handleFormSubmit = (e) =>{
   // TODO: Need to add the comment to the DOM when the button is pressed.
-  e.preventDefault()
+  e.preventDefault() 
   console.log("Comment:", this.state.commentFormBody)
   console.log("Line:", this.state.selectedLine)
   console.log("Current User:", this.state.currentUser)
@@ -249,7 +249,13 @@ handleFormSubmit = (e) =>{
     })
   })
   .then(response => response.json())
-  .then(console.log)
+  .then(comment =>{
+    console.log(comment)
+    this.setState(prevState=>({
+      selectedLineComments:[...prevState.selectedLineComments, comment],
+      commentFormBody: ''
+    })) 
+  })
 }
 
 deleteComment = (id) =>{
@@ -263,7 +269,10 @@ deleteComment = (id) =>{
     }
   })
   .then(response => response.json())
-  .then(console.log)
+  .then(newComment =>{
+    const remainingComments = this.state.selectedLineComments.filter(comment => comment.id !== newComment.id)
+    this.setState({selectedLineComments: remainingComments})
+  })
 }
 
 getUserFavorites = (userId) =>{

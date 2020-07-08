@@ -37,7 +37,7 @@ const FavoriteContainer = (props) =>{
             // key={pairedStops}
             station = {station}
             favoriteStation={props.favoriteStation}
-    
+            favoriteStyle={{}}
             />
         })
     }
