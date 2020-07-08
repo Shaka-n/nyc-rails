@@ -383,7 +383,7 @@ render(){
           </div>
           <LinePicker 
           stationsLoading={this.state.stationsLoading}
-          selectedStation={this.state.selectedStation}
+          selectedLine={this.state.selectedLine}
           updateSelectedStation={this.updateSelectedStation}
           />
           <div id={"content"}>
