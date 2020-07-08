@@ -365,6 +365,7 @@ render(){
           <FavoriteContainer
           favorites={this.state.favoriteStations}
           currentSchedule={this.state.currentSchedule}
+          favoriteStation={this.favoriteStation}
           />
           <ServiceAlertTicker 
           serviceAlerts={this.state.serviceAlerts}
