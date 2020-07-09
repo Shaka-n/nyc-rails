@@ -333,7 +333,7 @@ favoriteStation = (e, stops) =>{
     },
     body: JSON.stringify({
       user_id: this.state.currentUserId,
-      gtfs_stop_id: gtfsStopId
+      gtfs_stop_id: gtfsStopId  
     })
   })
   .then(response => response.json())

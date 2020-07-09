@@ -51,7 +51,7 @@ const renderStationSummaries = (schedule) =>{
         }
 
     }
-    console.log("Paired Stops Schedule", pairedStopsSchedule)
+    // console.log("Paired Stops Schedule", pairedStopsSchedule)
     return pairedStopsSchedule.map(station =>{
         return <StationSummary 
         // key={pairedStops}
@@ -64,21 +64,24 @@ const renderStationSummaries = (schedule) =>{
 
 // makeStopPairs(props.currentSchedules)
     return(
+        <div>
+             <h4 style={{textAlign:"center"}}>Imminent Arrivals</h4>
             <div id={"line-container"} style={{
                 display: 'flex', 
                 flexFlow: 'row wrap', 
                 alignContent: 'space-between',
                 backgroundColor: '#4D5357', 
-                width: '35vw',
-                height: '400px',
+                width: '30vw',
+                height: '60vh',
                 overflow: 'scroll'
                 }}>
+                
                 {/* {console.log(props.currentSchedules)} */}
                 {renderStationSummaries(props.currentSchedules)}
                 {/* {props.currentSchedules.map(station => renderStationSummary(station))} */}
                 
             </div>
-        
+        </div>
     )
 }
 
