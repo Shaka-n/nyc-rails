@@ -1,4 +1,5 @@
 .App {
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
   height: 100vh;
   /* overflow: scroll; */
   text-align: center;
@@ -29,6 +30,10 @@ h4{
 #content{
   display:flex;
   /* overflow: scroll; */
+  padding: 20px;
+  /* -moz-box-shadow:     0 0 10px #000000;
+   -webkit-box-shadow:  0 0 10px #000000;
+   box-shadow:          0 0 10px #000000; */
 }
 
 #line-box{
@@ -53,35 +58,44 @@ h4{
 }
 
 .line-container{
+  background-color: '#4D5357';
   overflow: scroll;
   position: relative;
   color: black;
   border: 2px;
-  width: 50vw;
+  width: '30vw';
   min-width: 201px;
-  height: 50vh;
+  height: 60vh;
   overflow: scroll;
   display: flex;
   flex-basis: auto;
   flex-flow: row wrap;
+  -moz-box-shadow:    inset 0 0 20px #000000;
+   -webkit-box-shadow: inset  0 0 20px #000000;
+   box-shadow:        inset  0 0 20px #000000;
   /* align-content: space-evenly; */
 }
 
 #favorite-container{
-  width: 20vw;
+  width: 15vw;
   /* height: 600px; */
+  padding: 10px;
   margin-left:10px;
   min-height: 60vh;
   overflow: scroll;
   display: flex;
   flex-basis: auto;
   flex-flow: row wrap;
+  border-radius: 8px;
+  -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000;
+   box-shadow:         inset 0 0 10px #000000;
 }
 
 .station-summary{
   position: relative;
   margin-top: 10px;
-  /* margin: 1%; */
+  margin: 5px;
   padding: 1%;
   max-height: 300px;
   min-height: 150px;
@@ -90,9 +104,9 @@ h4{
   background-color:#A7A9AC;
   color: white;
   border-radius: 5px;
-  -moz-box-shadow:    inset 0 0 10px #000000;
-   -webkit-box-shadow: inset 0 0 10px #000000;
-   box-shadow:         inset 0 0 10px #000000;
+  -moz-box-shadow:     0 0 10px #000000;
+   -webkit-box-shadow:  0 0 10px #000000;
+   box-shadow:          0 0 10px #000000;
 }
 
 .station-summary h3{
@@ -133,6 +147,13 @@ input, textarea{
   overflow: scroll;
   width: 40vw;
   height: 60vh;
+  padding: 5px;
+  margin: 5px;
+  margin-left: 15px;
+  border-radius: 8px;
+  -moz-box-shadow:    inset 0 0 10px #000000;
+   -webkit-box-shadow: inset 0 0 10px #000000;
+   box-shadow:         inset 0 0 10px #000000;
 }
 
 .comment{
@@ -147,9 +168,9 @@ input, textarea{
   padding-left: 15px;
   padding-right: 15px;
   justify-content: space-between;
-  -moz-box-shadow:    inset 0 0 10px #000000;
-   -webkit-box-shadow: inset 0 0 10px #000000;
-   box-shadow:         inset 0 0 10px #000000;
+  -moz-box-shadow:     0 0 10px #000000;
+   -webkit-box-shadow:  0 0 10px #000000;
+   box-shadow:          0 0 10px #000000;
 }
 
 button{

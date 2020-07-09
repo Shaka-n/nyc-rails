@@ -73,7 +73,11 @@ const renderStationSummaries = (schedule) =>{
                 backgroundColor: '#4D5357', 
                 width: '30vw',
                 height: '60vh',
-                overflow: 'scroll'
+                overflow: 'scroll',
+                borderRadius: '8px',
+                MozBoxShadow: 'inset 0 0 20px #000000',
+                WebkitBoxShadow: 'inset  0 0 20px #000000',
+                boxShadow: 'inset  0 0 20px #000000'
                 }}>
                 
                 {/* {console.log(props.currentSchedules)} */}
