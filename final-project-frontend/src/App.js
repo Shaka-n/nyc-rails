@@ -161,7 +161,7 @@ updateSelectedStation = (line) =>{
   this.fetchLiveData(line)
   this.fetchComments(line)
   this.fetchServiceAlerts()
-  // this.getUserFavorites(this.state.currentUserId)
+  this.getUserFavorites(this.state.currentUserId)
   }
 
 fetchServiceAlerts = () =>{
@@ -285,12 +285,15 @@ getUserFavorites = (userId) =>{
 }
 
 favoriteStation = (e, stops) =>{
-  const gtfsStopId = stops[0].stationId.slice(0, -1)
-  console.log(gtfsStopId)
+  let gtfsStopId
+  if(stops.d1){
+    gtfsStopId = stops.d1.stationId.slice(0, -1)
+    console.log(gtfsStopId)
+  }
 
-  if(e.target.textContent === "★"){
+  if(e.target.textContent === "★"||this.state.currentUserFavorites.find(favorite => favorite !== stops.d1.stationId)){
     e.target.textContent = "☆"
-    const newFavorites = this.state.currentUserFavorites.filter(favorite => favorite !== stops[0].stationId)
+    const newFavorites = this.state.currentUserFavorites.filter(favorite => favorite !== stops.d1.stationId)
     this.setState(prevState=>({
       ...prevState,
       currentUserFavorites: newFavorites
@@ -313,13 +316,13 @@ favoriteStation = (e, stops) =>{
   }else{
     e.target.textContent = "★"
     console.log(stops)
-  if(stops[1]){
+  if(stops.d2){
     this.setState( prevState =>({
       ...prevState,
       currentUserFavorites: [
         ...prevState.currentUserFavorites,
-        stops[0].stationId,
-        stops[1].stationId
+        stops.d1.stationId,
+        stops.d2.stationId
       ]
     })
     )
@@ -328,7 +331,7 @@ favoriteStation = (e, stops) =>{
       ...prevState,
       currentUserFavorites: [
         ...prevState.currentUserFavorites,
-        stops[0].stationId
+        stops.d1.stationId
       ]}))
   }
 
@@ -364,19 +367,14 @@ render(){
     <div className="App">
       <header className="App-header">
         <p>
-          There are {this.state.stations.length} stations in the database.
+          NYCRails: Get Mad at the MTA
+          {/* There are {this.state.stations.length} stations in the database.
           There are {this.state.currentSchedule.length} scheduled arrivals.
-          There are {this.state.serviceAlerts.length} active service alerts.
+          There are {this.state.serviceAlerts.length} active service alerts. */}
         </p>
       </header>
       <main>
         <div>
-          <FavoriteContainer
-          favorites={this.state.favoriteStations}
-          currentSchedule={this.state.currentSchedule}
-          favoriteStation={this.favoriteStation}
-          
-          />
           <ServiceAlertTicker 
           serviceAlerts={this.state.serviceAlerts}
           selectedLine={this.state.selectedLine}
@@ -399,6 +397,12 @@ render(){
           handleFormChange={this.handleFormChange}
           handleFormSubmit={this.handleFormSubmit}
           deleteComment={this.deleteComment}
+          />
+          <FavoriteContainer
+          favorites={this.state.favoriteStations}
+          currentSchedule={this.state.currentSchedule}
+          favoriteStation={this.favoriteStation}
+
           />
           </div>
       </main>

@@ -1,4 +1,6 @@
 .App {
+  height: 100vh;
+  /* overflow: scroll; */
   text-align: center;
   background-color: #4D5357;
 
@@ -6,12 +8,12 @@
 
 .App-header {
   background-color: #4D5357;
-  min-height: 20vh;
+  min-height: 1vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(5px + 2vmin);
   color: white;
 }
 
@@ -19,8 +21,14 @@
   color: #61dafb;
 }
 
+h4{
+  color: white;
+  margin-top: 0px;
+}
+
 #content{
   display:flex;
+  /* overflow: scroll; */
 }
 
 #line-box{
@@ -36,11 +44,13 @@
   color: white;
 }
 .line-container{
+  overflow: scroll;
   position: relative;
   color: black;
   border: 2px;
-  width: 600px;
-  height: 400px;
+  width: 50vw;
+  min-width: 201px;
+  height: 40vh;
   overflow: scroll;
   display: flex;
   flex-basis: auto;
@@ -49,7 +59,10 @@
 }
 
 #favorite-container{
-  height: 200px;
+  width: 20vw;
+  /* height: 600px; */
+  margin-left:10px;
+  min-height: 60vh;
   overflow: scroll;
   display: flex;
   flex-basis: auto;
@@ -57,10 +70,14 @@
 }
 
 .station-summary{
-  /* position: relative; */
-  margin: 2px;
-  padding: 0.010%;
-  width: 200px;
+  position: relative;
+  margin-top: 10px;
+  /* margin: 1%; */
+  padding: 1%;
+  max-height: 300px;
+  min-height: 150px;
+  min-width: 200px;
+  max-width: 200px;
   background-color:#A7A9AC;
   color: white;
   border-radius: 5px;
@@ -71,15 +88,47 @@
 
 .station-summary h3{
   background-color: darkolivegreen;
-  padding-top: 10px;
+  padding-top: 5px;
   padding-bottom: 10px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+  margin-right: 10px;
+  overflow: hidden;
+}
+
+.station-summary p{
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.manhattan{
+  color: black;
+}
+
+.somewhere-else{
+  color: black;
+}
+
+
+#favorite-container{
+  margin-bottom: 5px;
+  height: 10vh;
 }
 
 input, textarea{
   border-radius: 5px; 
 }
 
+.comment-container{
+  overflow: scroll;
+  width: 40vw;
+  height: 60vh;
+}
+
 .comment{
+  min-width: 300px;
+  max-width: 500px;
   display:flex;
   color:white;  
   background-color: rgb(107, 107, 107);
@@ -95,7 +144,6 @@ input, textarea{
 }
 
 button{
-  
   height: 25px;
   width: 25px;
   border-radius: 5px;
@@ -132,12 +180,16 @@ button{
 }
 
 /* Favorites */
+.favorite{
+  margin-top: 0px;
+  margin-bottom: -5px;
+}
 .favorite > span{
   z-index:-1;
 }
 .favorite > span:hover:before {
   content: "\2605";
-  position: relative;
+  position: absolute;
   z-index: 1;
   color: gold;
 }

@@ -53,7 +53,10 @@ const ServiceAlertTicker = (props) =>{
                             }
                             break;
                         case 'bdfm':
-                            if(alert.alert.includes("[B]")|| alert.alert.includes("[D]")|| alert.alert.includes("[F]") || alert.alert.includes("[M]")){
+                            if(alert.alert.includes("[B]")|| 
+                            alert.alert.includes("[D]")|| 
+                            alert.alert.includes("[F]") || 
+                            alert.alert.includes("[M]")){
                                 return <div 
                                 key={alert.id} 
                                 className={"ticker__item"}
@@ -62,7 +65,12 @@ const ServiceAlertTicker = (props) =>{
                             }
                             break;
                         case '123456':
-                            if(alert.alert.includes("[B]")|| alert.alert.includes("[D]")|| alert.alert.includes("[F]") || alert.alert.includes("[M]")){
+                            if(alert.alert.includes("[1]")|| 
+                            alert.alert.includes("[2]")|| 
+                            alert.alert.includes("[3]") || 
+                            alert.alert.includes("[4]") ||
+                            alert.alert.includes("[5]") ||
+                            alert.alert.includes("[6]")){
                                 return <div 
                                 key={alert.id} 
                                 className={"ticker__item"}
@@ -71,7 +79,10 @@ const ServiceAlertTicker = (props) =>{
                             }
                             break;
                         case 'nqrw':
-                            if(alert.alert.includes("[N]")|| alert.alert.includes("[Q]")|| alert.alert.includes("[R]") || alert.alert.includes("[W]")){
+                            if(alert.alert.includes("[N]")|| 
+                            alert.alert.includes("[Q]")|| 
+                            alert.alert.includes("[R]") || 
+                            alert.alert.includes("[W]")){
                                 return <div 
                                 key={alert.id} 
                                 className={"ticker__item"}

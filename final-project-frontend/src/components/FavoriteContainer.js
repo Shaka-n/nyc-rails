@@ -43,12 +43,12 @@ const FavoriteContainer = (props) =>{
     }
 
     return(
-        <>
+        <div style={{height: '400px'}}>
         <h4>My Favorites</h4>
         <div id={"favorite-container"}>
             {renderFavoriteSummaries(props.favorites)}
         </div>
-        </>
+        </div>
     )
 }
 

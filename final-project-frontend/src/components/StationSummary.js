@@ -16,9 +16,9 @@ const StationSummary = (props) =>{
         let direction = stationId.slice(-1)
 
         if(direction === "N"){
-            direction = "North"
+            direction = "Manhattan"
         }else if(direction==="S"){
-            direction ="South"
+            direction ="Somewhere Else"
         }
         return direction
     }
@@ -27,15 +27,15 @@ const StationSummary = (props) =>{
         // console.log(props.station)
         if(props.station.d2){
             return(
-                <div>
+                <div className={"station-summary"}>
                     <h3> {props.station.d2.stationName} </h3>
                     <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station)}><span >☆</span></div>
                     <div className={"northbound-station"}>
-                        <p>Direction: {determineDirection(props.station.d2.stationId)}</p>
+                        <p className={"manhattan"}>Direction: {determineDirection(props.station.d2.stationId)}</p>
                         <p>Next train: {convertPosixToDate(props.station.d2.nextArrival)} </p>
                     </div>
                     <div className={"southbound-station"}>
-                        <p>Direction: {determineDirection(props.station.d1.stationId)} </p>
+                        <p className={"somewhere-else"}>Direction: {determineDirection(props.station.d1.stationId)} </p>
                         <p>Next train: {convertPosixToDate(props.station.d1.nextArrival)}</p>
                     </div>
                 </div>
@@ -43,11 +43,11 @@ const StationSummary = (props) =>{
             
         } else{
             return (
-                <div>
+                <div className={"station-summary"}>
                 <h3>{props.station.d1.stationName}</h3>
                 <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station.d1)}><span >☆</span></div>
                 <div className={"northbound-station"}>
-                    <p>Direction: {determineDirection(props.station.d1.stationId)}</p>
+                    <p className={"manhattan"}>Direction: {determineDirection(props.station.d1.stationId)}</p>
                     <p>Next train: {convertPosixToDate(props.station.d1.nextArrival)} </p>
                 </div>
                 </div>
@@ -58,9 +58,9 @@ const StationSummary = (props) =>{
 
     return(
 
-        <div className={"station-summary"}>
+        <>
             {renderSummary()}
-        </div>
+        </>
     )
 }
 

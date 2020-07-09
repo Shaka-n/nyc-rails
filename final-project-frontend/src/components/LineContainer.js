@@ -69,7 +69,7 @@ const renderStationSummaries = (schedule) =>{
                 flexFlow: 'row wrap', 
                 alignContent: 'space-between',
                 backgroundColor: '#4D5357', 
-                width: '650px',
+                width: '35vw',
                 height: '400px',
                 overflow: 'scroll'
                 }}>
