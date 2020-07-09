@@ -43,6 +43,15 @@ h4{
   position: relative;
   color: white;
 }
+
+#line-picker select{
+  color: white;
+  border: 1px solid #0039A6;
+  border-radius: 5px;
+  background-color: #0039A6;
+  margin-bottom: 5px;
+}
+
 .line-container{
   overflow: scroll;
   position: relative;

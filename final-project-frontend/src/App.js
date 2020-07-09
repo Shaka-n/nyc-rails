@@ -285,13 +285,15 @@ getUserFavorites = (userId) =>{
 }
 
 favoriteStation = (e, stops) =>{
-  let gtfsStopId
+  console.log(stops)
+  let gtfsStopId = stops.d1.stationId.slice(0, -1)
+  console.log(gtfsStopId)
   if(stops.d1){
     gtfsStopId = stops.d1.stationId.slice(0, -1)
     console.log(gtfsStopId)
   }
 
-  if(e.target.textContent === "★"||this.state.currentUserFavorites.find(favorite => favorite !== stops.d1.stationId)){
+  if(e.target.textContent === "★"||this.state.currentUserFavorites.find(favorite => favorite === gtfsStopId)){
     e.target.textContent = "☆"
     const newFavorites = this.state.currentUserFavorites.filter(favorite => favorite !== stops.d1.stationId)
     this.setState(prevState=>({
@@ -316,24 +318,12 @@ favoriteStation = (e, stops) =>{
   }else{
     e.target.textContent = "★"
     console.log(stops)
-  if(stops.d2){
     this.setState( prevState =>({
       ...prevState,
       currentUserFavorites: [
         ...prevState.currentUserFavorites,
-        stops.d1.stationId,
-        stops.d2.stationId
-      ]
-    })
-    )
-  }else{
-    this.setState( prevState =>({
-      ...prevState,
-      currentUserFavorites: [
-        ...prevState.currentUserFavorites,
-        stops.d1.stationId
+        gtfsStopId
       ]}))
-  }
 
   fetch(`${BACKEND}/favorites`,{
     method: "POST",
@@ -359,7 +349,7 @@ render(){
   // console.log(this.state.stations)
   // console.log(this.state.currentSchedule)
   // console.log(this.state.selectedLineComments)
-  // console.log(this.state.currentUserFavorites)
+  console.log(this.state.currentUserFavorites)
   // console.log(this.state.selectedLine)
   // console.log(this.state.serviceAlerts)
   // console.log(this.state.favoriteStations)

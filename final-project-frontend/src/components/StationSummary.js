@@ -29,7 +29,7 @@ const StationSummary = (props) =>{
             return(
                 <div className={"station-summary"}>
                     <h3> {props.station.d2.stationName} </h3>
-                    <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station)}><span >☆</span></div>
+                    <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station)}><span >{props.favoriteStyle ? "★" : "☆"}</span></div>
                     <div className={"northbound-station"}>
                         <p className={"manhattan"}>Direction: {determineDirection(props.station.d2.stationId)}</p>
                         <p>Next train: {convertPosixToDate(props.station.d2.nextArrival)} </p>
@@ -45,7 +45,7 @@ const StationSummary = (props) =>{
             return (
                 <div className={"station-summary"}>
                 <h3>{props.station.d1.stationName}</h3>
-                <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station.d1)}><span >☆</span></div>
+            <div className={"favorite"} onClick={(e)=>props.favoriteStation(e, props.station)}><span >{props.favoriteStyle ? "★" : "☆"}</span></div>
                 <div className={"northbound-station"}>
                     <p className={"manhattan"}>Direction: {determineDirection(props.station.d1.stationId)}</p>
                     <p>Next train: {convertPosixToDate(props.station.d1.nextArrival)} </p>

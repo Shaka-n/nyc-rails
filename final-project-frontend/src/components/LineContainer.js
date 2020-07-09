@@ -51,7 +51,7 @@ const renderStationSummaries = (schedule) =>{
         }
 
     }
-    // console.log("Paired Stops Schedule", pairedStopsSchedule)
+    console.log("Paired Stops Schedule", pairedStopsSchedule)
     return pairedStopsSchedule.map(station =>{
         return <StationSummary 
         // key={pairedStops}

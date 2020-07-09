@@ -14,7 +14,7 @@ const handleChange = (line) =>{
             {!props.stationsLoading && (
                 <>
                 <p>Now viewing arrival times for the following routes: {props.selectedLine ? props.selectedLine.substr(0).toUpperCase() : "None"}</p>
-                <select name="line-selection" id="lines" onChange={(e)=> handleChange(e.target.value)}>
+                <select name="line-selection" id="line-selector" onChange={(e)=> handleChange(e.target.value)}>
                 <option>Choose a line</option>
                 <option value="-l">L</option>
                 <option value="-ace">A,C,E</option>
