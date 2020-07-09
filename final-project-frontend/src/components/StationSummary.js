@@ -16,9 +16,9 @@ const StationSummary = (props) =>{
         let direction = stationId.slice(-1)
 
         if(direction === "N"){
-            direction = "Manhattan"
+            direction = "Borough-bound"
         }else if(direction==="S"){
-            direction ="Somewhere Else"
+            direction ="Manhattan-bound"
         }
         return direction
     }

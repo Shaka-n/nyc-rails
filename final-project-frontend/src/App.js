@@ -184,7 +184,7 @@ fetchServiceAlerts = () =>{
           return newServiceAlerts.push({alert : entity.alert.descriptionText.translation[0].text})
         }
       })
-      // console.log(newServiceAlerts)
+      console.log(newServiceAlerts)
       this.setState({ serviceAlerts : newServiceAlerts})
       }
   })
