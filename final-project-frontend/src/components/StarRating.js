@@ -1,4 +1,5 @@
 import React from 'react'
+import Star from './Star.js'
 
 class StarRating extends React.Component {
     
@@ -35,6 +36,7 @@ class StarRating extends React.Component {
         // and all the preceeding stars should be colored in. When I click on a star, the corresponding score should
         // be stored in a hidden field in the form, which will be submitted when the form is submitted.
         let stars = []
+        let classes = 'star-rating__star'
 
         for(let i = 0; i < 5; i++){
             
@@ -44,13 +46,13 @@ class StarRating extends React.Component {
         }
 
         stars.push(
-            <label>
+            <Star
                 className={classes}
-                onClick = {this.setRating.bind(this, i)}
-                onMouseOver = {this.onHover.bind(this, i)}
+                onClick = {this.setRating.bind(this)}
+                onMouseOver = {this.onHover.bind(this)}
                 onMouseOut = {this.onUnHover}
-                ★
-            </label>
+                
+            />
         )
         return (
             <div className="star-rating">

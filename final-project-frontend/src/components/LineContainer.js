@@ -35,18 +35,15 @@ const renderStationSummaries = (schedule) =>{
     let pairedStopsSchedule =[]
     for(let i = 0;i<schedule.length-1;i++){
         let j = i + 1
-        // console.log("Schedule[i]", schedule[i].stationName)
-        // console.log("Schedule[j]", schedule[j].stationName)
+
         if(j===schedule.length){
             pairedStopsSchedule.push({d1:schedule[j]})
-            // console.log('last')
+
         }else if(schedule[i].stationName === schedule[j].stationName){
             pairedStopsSchedule.push({d1:schedule[i], d2:schedule[j]})
             i++
-            // console.log('pair')
         }
         else{
-            // console.log('single')
             pairedStopsSchedule.push({d1:schedule[i]})
         }
 

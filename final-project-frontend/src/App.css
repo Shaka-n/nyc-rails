@@ -226,8 +226,3 @@ button{
 
 /* Star Rating*/
 
-.star-rating{
-  content:"\2605";
-  z-index: -1;
-  color: black;
-}
