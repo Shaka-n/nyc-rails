@@ -1,7 +1,6 @@
 import React from 'react'
 import Comment from './Comment.js'
 import CommentForm from './CommentForm.js'
-import { render } from '@testing-library/react'
 
 
 const CommentContainer= (props)=>{

@@ -1,4 +1,5 @@
 import React from 'react'
+import StarRating from './StarRating.js'
 
 const CommentForm = (props)=>{
 
@@ -26,13 +27,16 @@ const CommentForm = (props)=>{
     return(
         <div id={'comment-form'}>
             <form onSubmit={e => props.handleFormSubmit(e)}>
+                <StarRating 
+                    rating = '2'
+                />
                 <input 
-                type="textarea" 
-                onChange={e => 
-                props.handleFormChange(e)}
-                value={props.commentFormBody}
-                style={{height:"100px", width:"400px"}}
-                placeholder={randomPlaceHolder()}
+                    type="textarea" 
+                    onChange={e => 
+                    props.handleFormChange(e)}
+                    value={props.commentFormBody}
+                    style={{height:"100px", width:"400px"}}
+                    placeholder={randomPlaceHolder()}
                 />
                 <input type="submit"/>
             </form>

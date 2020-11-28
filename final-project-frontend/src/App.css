@@ -223,3 +223,11 @@ button{
   z-index: 1;
   color: gold;
 }
+
+/* Star Rating*/
+
+.star-rating{
+  content:"\2605";
+  z-index: -1;
+  color: black;
+}
