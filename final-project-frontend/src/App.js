@@ -253,7 +253,8 @@ handleFormSubmit = (e) =>{
     body: JSON.stringify({
       body: this.state.commentFormBody,
       user_id: this.state.currentUserId,
-      name: targetLine
+      name: targetLine,
+      rating: this.state.commentFormStarRating
     })
   })
   .then(response => response.json())
