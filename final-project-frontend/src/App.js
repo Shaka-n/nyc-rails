@@ -51,6 +51,7 @@ state ={
   selectedLine: null,
   selectedLineComments: [],
   commentFormBody: '',
+  commentFormStarRating: null,
   currentUser: 'Garen',
   currentUserId: 1,
   currentUserFavorites: [],
@@ -224,14 +225,21 @@ fetchComments = (line) =>{
 
 handleFormChange = (e)=>{
   this.setState({
-    commentFormBody: e.target.value
+    commentFormBody: e.target.value,
+    // commentFormStarRating: e.target
   })
 }
-
+handleRatingChange = (e) =>{
+  console.log(this.state.commentFormStarRating)
+  this.setState({
+    commentFormStarRating: e.target.value
+  })
+}
 handleFormSubmit = (e) =>{
   // TODO: Need to add the comment to the DOM when the button is pressed.
   e.preventDefault() 
   console.log("Comment:", this.state.commentFormBody)
+  console.log("Star Rating:", this.state.commentFormStarRating)
   console.log("Line:", this.state.selectedLine)
   console.log("Current User:", this.state.currentUser)
   // This is where the fetch POST to the backend needs to happen.
@@ -384,7 +392,9 @@ render(){
           <CommentContainer 
           selectedLineComments={this.state.selectedLineComments}
           commentFormBody={this.state.commentFormBody} 
+          commentFormStarRating={this.state.commentFormStarRating}
           handleFormChange={this.handleFormChange}
+          handleRatingChange = {this.handleRatingChange}
           handleFormSubmit={this.handleFormSubmit}
           deleteComment={this.deleteComment}
           />

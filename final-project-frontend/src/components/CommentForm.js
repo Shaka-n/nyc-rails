@@ -28,10 +28,11 @@ const CommentForm = (props)=>{
         <div id={'comment-form'}>
             <form onSubmit={e => props.handleFormSubmit(e)}>
                 <StarRating 
-                    rating = '2'
-                />
+                    handleRatingChange={e => props.handleRatingChange(e)}
+                    />
                 <input 
                     type="textarea" 
+                    id={"comment-body"}
                     onChange={e => 
                     props.handleFormChange(e)}
                     value={props.commentFormBody}

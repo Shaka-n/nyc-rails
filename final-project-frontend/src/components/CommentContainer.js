@@ -23,7 +23,9 @@ const CommentContainer= (props)=>{
             {/* {console.log(props.selectedLineComments)} */}
             <CommentForm 
             commentFormBody={props.commentFormBody}
+            commentFormStarRating={props.commentFormStarRating}
             handleFormChange={props.handleFormChange}
+            handleRatingChange = {props.handleRatingChange}
             handleFormSubmit={props.handleFormSubmit}
             />
             <div id={"comment-list"}>
