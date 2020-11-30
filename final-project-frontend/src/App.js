@@ -353,15 +353,7 @@ favoriteStation = (e, stops) =>{
 }
 
 render(){
-  // console.log(this.state)
-  // this.state.stations.forEach(station => console.log(station.gtfs_stop_id))
-  // console.log(this.state.stations)
-  // console.log(this.state.currentSchedule)
-  // console.log(this.state.selectedLineComments)
-  console.log(this.state.currentUserFavorites)
-  // console.log(this.state.selectedLine)
-  // console.log(this.state.serviceAlerts)
-  // console.log(this.state.favoriteStations)
+
   return (
     <div className="App">
       <header className="App-header">

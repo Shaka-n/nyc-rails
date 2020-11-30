@@ -224,15 +224,9 @@ button{
   color: gold;
 }
 
-/* Star Rating*/
+/* Star Rating Form*/
 
-  /* 
-        Use :not with impossible condition so inputs are only hidden 
-        if pseudo selectors are supported. Otherwise the user would see
-        no inputs and no highlighted stars.
-    */
-    .rating input[type="radio"]:not(:nth-of-type(0)) {
-      /* hide visually */    
+    .rating input[type="radio"]:not(:nth-of-type(0)) {   
       border: 0;
       clip: rect(0 0 0 0);
       height: 1px;
@@ -276,4 +270,8 @@ button{
   .rating [type="radio"]:nth-of-type(4):focus ~ .stars label:nth-of-type(4),
   .rating [type="radio"]:nth-of-type(5):focus ~ .stars label:nth-of-type(5) {
       color: darkorange;
+  }
+
+  .comment-rating{
+    color: darkorange
   }

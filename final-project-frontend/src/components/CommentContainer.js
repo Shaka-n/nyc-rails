@@ -10,6 +10,7 @@ const CommentContainer= (props)=>{
             return props.selectedLineComments.map(comment => {
                 return <Comment 
                 key={comment.id} 
+                rating = {comment.rating}
                 commentBody={comment.body}
                 deleteComment={props.deleteComment}
                 commentId={comment.id}
