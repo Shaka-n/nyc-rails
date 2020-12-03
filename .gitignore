@@ -119,4 +119,4 @@ dist
 final_project_backend/config/initializers/secret_token.rb
 /final_project_backend/config/master.key
 
-.test
+.test.txt
