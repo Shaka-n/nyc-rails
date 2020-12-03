@@ -1,0 +1,31 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  complex_id: MyString
+  gtfs_stop_id: MyString
+  division: MyString
+  line: MyString
+  stop_name: MyString
+  borough: MyString
+  daytime: MyString
+  routes: MyString
+  structure: MyString
+  gtfs_lat: MyString
+  gtfs_long: MyString
+  north_d_label: MyString
+  south_d_label: MyString
+
+two:
+  complex_id: MyString
+  gtfs_stop_id: MyString
+  division: MyString
+  line: MyString
+  stop_name: MyString
+  borough: MyString
+  daytime: MyString
+  routes: MyString
+  structure: MyString
+  gtfs_lat: MyString
+  gtfs_long: MyString
+  north_d_label: MyString
+  south_d_label: MyString
