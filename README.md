@@ -8,10 +8,7 @@ encode your own. It is not strictly necessary to consume protobuf files, but it 
 Also, for some reason, some endpoints return XML files, sometimes. From what I gather, some endpoint were originally built on the SOAP standard, but this has not been confirmed.
 The documentation is a bit spotty, but the Google Groups forum is very helpful, should you have questions.
 
-Currently, the API is being pulled through the frontend, which is bad practice, and not certainly ideal for this application. This happened due to the deprecation
+Currently, the API is being pulled through the frontend, which is bad practice, and not certainly ideal for this application. This was an unfortunate compromise I had to make due to the deprecation
 of a Ruby gem which I was depending on to parse the protocol buffer feed supplied by the API. In the interest of finishing the project in time to graduate, I opted 
 to pull API data in through the frontend. The goal will be to return to the original design where the backend handles all interaction with the API, caches data,
 and stores user data. The frontend should solely be concerned with display logic.
-
-There is another issue, which is that this repo is currently nested due to an error I made while initializing the backend. You can find that repo here[https://github.com/Shaka-n/flatiron-final-project-backend] if you wish to see that code.
-I will correct this issue once I'm sure that I'm not going to break everything.
